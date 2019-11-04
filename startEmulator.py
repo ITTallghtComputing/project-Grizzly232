@@ -1,5 +1,5 @@
 # Author: Michael Brady - X00136103
-# This file takes a ROM filename and starts the appropriate emulator
+# This script takes a ROM filename and starts the appropriate emulator
 
 import subprocess
 from subprocess import Popen
