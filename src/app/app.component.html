@@ -1,10 +1,10 @@
 <div ng-app="swimApp" ng-controller="app.component.ts">
-  <h1>
+  <!-- <h1>
     whatever
   </h1>
   <ul>
     <li class="text" *ngFor="let item of items | async">
-      {{item}}
+      {{item.field1}}
     </li>
   </ul>
   <h1>Users:</h1>
@@ -14,5 +14,6 @@
       {{user.name}}
     </li>
   </ul>
+  <button (click)="add()">Add New User</button> -->
 </div>
 <router-outlet></router-outlet>
