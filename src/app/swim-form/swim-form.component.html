@@ -1,0 +1,10 @@
+<form [formGroup]="addForm" (ngSubmit)="onSubmit(addForm.value)">
+    <label for="lengths">Lengths</label>
+    <input id="lengths" type="text" formControlName="lengths">
+    <label for="distance">Distance</label>
+    <input id="distance" type="text" formControlName="distance">
+    <label for="activity">Activity</label>
+    <input id="activity" type="text" formControlName="activity">
+    <button type="button" type="submit" class="btn btn-primary">Create</button>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+</form>

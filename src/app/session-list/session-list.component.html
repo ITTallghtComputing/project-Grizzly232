@@ -19,10 +19,9 @@
             </div>
             <form [formGroup]="addForm" (ngSubmit)="onSubmit(addForm.value)">
                 <div class="modal-body">
-                    <label for="Location">
-                        Location
-                    </label>
+                    <label for="Location">Location</label>
                     <input id="location" type="text" formControlName="location">
+                    <button type="button" class="btn btn-primary" (click)="addSwim()">Add Swim</button>
                 </div>
                 <div class="modal-footer">
                 <button type="button" type="submit" class="btn btn-primary">Create</button>

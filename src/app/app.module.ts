@@ -13,6 +13,8 @@ import { UserComponent } from './user/user.component';
 import { Session } from './session/session.component';
 import { Swim } from './swim/swim.component';
 import { SessionListComponent } from './session-list/session-list.component';
+import { SwimFormComponent } from './swim-form/swim-form.component';
+import { FormAdderService } from './services/form-adder.service';
 
 const appRoutes: Routes = [
   { path: 'sessions', component: SessionListComponent }
@@ -24,7 +26,8 @@ const appRoutes: Routes = [
     UserComponent,
     Session,
     Swim,
-    SessionListComponent
+    SessionListComponent,
+    SwimFormComponent
   ],
   imports: [
     BrowserModule,
@@ -41,6 +44,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [SwimFormComponent]
 })
 export class AppModule { }
