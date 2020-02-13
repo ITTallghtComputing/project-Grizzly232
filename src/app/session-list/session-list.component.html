@@ -1,33 +1,49 @@
-<router-outlet></router-outlet>
 <h2>Session List</h2>
-<ul>
-    <li class="text" *ngFor="let session of sessions | async">
-        {{session.id}}
-        {{session.location}}
-        {{session.swims}}
-    </li>
-</ul>
-<button class="btn btn-success" data-toggle="modal" data-target="#addSessionModal">New Session</button>
-<div class="modal" tabindex="-1" role="dialog" id="addSessionModal">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Add a new session</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+<!-- <button type="button" class="btn btn-primary" (click)="debug()">press</button> -->
+<ul style="list-style-type: none;">
+  <li class="text" *ngFor="let session of sessions | async">
+    <div class="card">
+      <div class="card-header">
+        <h5 style="float: left">Session #{{session.id}}</h5>
+        <button style="float:right" type="button" class="btn btn-primary" (click)="showForm=true">Add Activity</button>
+      </div>
+      <div class="card-body">
+        <p><strong>Location</strong> {{session.location}}</p>
+        <div class="card">
+          <div class="card-body">
+            <div *ngFor="let swim of session.swims | keyvalue">
+              <p><strong>{{swim.key}}</strong> {{swim.value}}</p>
             </div>
-            <form [formGroup]="addForm" (ngSubmit)="onSubmit(addForm.value)">
-                <div class="modal-body">
-                    <label for="Location">Location</label>
-                    <input id="location" type="text" formControlName="location">
-                    <button type="button" class="btn btn-primary" (click)="addSwim()">Add Swim</button>
-                </div>
-                <div class="modal-footer">
-                <button type="button" type="submit" class="btn btn-primary">Create</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                </div>
-            </form>
           </div>
         </div>
       </div>
+      <div *ngIf="showForm">
+        <app-swim-form [sessionId]=session.id></app-swim-form>
+      </div>
+    </div>
+    <router-outlet></router-outlet>
+  </li>
+</ul>
+<button class="btn btn-success" data-toggle="modal" data-target="#addSessionModal">New Session</button>
+<div class="modal" tabindex="-1" role="dialog" id="addSessionModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add a new session</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="addForm" (ngSubmit)="onSubmit(addForm.value)">
+          <div class="modal-body">
+            <label for="Location">Location</label>
+            <input id="location" type="text" formControlName="location">
+          </div>
+          <div class="modal-footer">
+          <button type="button" type="submit" class="btn btn-primary">Create</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>

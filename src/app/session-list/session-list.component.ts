@@ -13,6 +13,7 @@ import { SwimBinderService } from '../services/swim-binder.service';
 export class SessionListComponent implements OnInit {
 
   addForm;
+  testForm;
   sessions: Observable<any[]>;
   whatever: any;
 
@@ -27,6 +28,8 @@ export class SessionListComponent implements OnInit {
       location: '',
       swims: ''
     })
+    this.testForm = this.builder.group({
+    })
   }
 
   ngOnInit() {
@@ -36,33 +39,16 @@ export class SessionListComponent implements OnInit {
     })
   }
 
+  debug() {
+    console.log(this.sessions);
+    console.log(this.whatever);
+  }
+
   onSubmit(sessionData) {
     sessionData["id"] = 5;
     console.log(sessionData);
     this.db.addSession(sessionData);
-    // console.log("Session added");
-    // sessionData += { id: this.numSessions + 1};
-    // console.log(sessionData[0], sessionData[1]);
-    //this.db.addSession(sessionData);
-    //this.addForm.reset();
-    // sessionData = {
-    //   id: 1,
-    //   location: "a place",
-    // };
-    var extraData = {
-      swims: [{
-        length: 5,
-        distance: 100,
-        activity: "shwimmin"
-      },
-      {
-        length: 10,
-        distance: 20,
-        activity: "shwimmin upside down"
-      }]
-    };
-    console.log(this.whatever);
-    this.db.updateSession(1, extraData);
+    this.db.updateSession(7, {});
   }
 
   addSwim() {

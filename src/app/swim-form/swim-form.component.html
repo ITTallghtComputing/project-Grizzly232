@@ -1,10 +1,28 @@
 <form [formGroup]="addForm" (ngSubmit)="onSubmit(addForm.value)">
-    <label for="lengths">Lengths</label>
-    <input id="lengths" type="text" formControlName="lengths">
-    <label for="distance">Distance</label>
-    <input id="distance" type="text" formControlName="distance">
-    <label for="activity">Activity</label>
-    <input id="activity" type="text" formControlName="activity">
-    <button type="button" type="submit" class="btn btn-primary">Create</button>
-    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-sm-4">
+                <label for="lengths">Lengths</label>
+                <input id="lengths" class="form-control" type="text" formControlName="lengths">
+            </div>
+            <div class="col-sm-4">
+                <label for="distance">Distance</label>
+                <input id="distance" class="form-control" type="text" formControlName="distance">
+            </div>
+            <div class="col-sm-4">
+                <label for="activity">Activity</label>
+                <input id="activity" class="form-control" type="text" formControlName="activity">
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-sm-6">
+                <button type="button" style="width: 100%" type="submit" class="btn btn-primary">Create</button>
+            </div>
+            <div class="col-sm-6">
+                <button type="button" style="width: 100%" (click)="showForm=false;" class="btn btn-secondary"
+                    data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
 </form>
