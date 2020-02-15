@@ -13,7 +13,7 @@ import { SwimBinderService } from '../services/swim-binder.service';
 export class SessionListComponent implements OnInit {
 
   addForm;
-  testForm;
+  showForm: boolean = false;
   sessions: Observable<any[]>;
   whatever: any;
 
@@ -27,8 +27,6 @@ export class SessionListComponent implements OnInit {
     this.addForm = this.builder.group({
       location: '',
       swims: ''
-    })
-    this.testForm = this.builder.group({
     })
   }
 
@@ -54,5 +52,9 @@ export class SessionListComponent implements OnInit {
   addSwim() {
     this.formAdder.setRootViewContainerRef(this.viewContainerRef);
     this.formAdder.addSwimForm();
+  }
+
+  closeSwimForm() {
+    this.showForm = false;
   }
 }
