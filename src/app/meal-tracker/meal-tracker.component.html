@@ -1,0 +1,23 @@
+<h2>Meal Tracker</h2>
+<ul style="list-style-type: none;">
+    <li class="text" *ngFor="let day of days | async">
+        <div class="card">
+            <div class="card-header">
+                <h5 style="float: left">Day {{ day.id }}</h5>
+            </div>
+            <div class="card-body">
+                <div *ngFor="let meal of day.meals">
+                    {{ meal }}
+                    <div *ngFor="let inner of meal | keyvalue">
+                        <div *ngFor="let ingredient of inner.value">
+                            <div *ngFor="let inner of ingredient | keyvalue" style="display: inline-block; padding: 0.5%;">
+                                <p><strong>{{ inner.key }}</strong> {{ inner.value }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <router-outlet></router-outlet>
+    </li>
+</ul>

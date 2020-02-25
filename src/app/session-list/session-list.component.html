@@ -1,5 +1,5 @@
 <h2>Session List</h2>
-<!-- <button type="button" class="btn btn-primary" (click)="debug()">press</button> -->
+<button class="btn btn-success" data-toggle="modal" data-target="#addSessionModal">New Session</button>
 <ul style="list-style-type: none;">
   <li class="text" *ngFor="let session of sessions | async">
     <div class="card">
@@ -24,7 +24,6 @@
     <router-outlet></router-outlet>
   </li>
 </ul>
-<button class="btn btn-success" data-toggle="modal" data-target="#addSessionModal">New Session</button>
 <div class="modal" tabindex="-1" role="dialog" id="addSessionModal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">

@@ -15,9 +15,12 @@ import { Swim } from './swim/swim.component';
 import { SessionListComponent } from './session-list/session-list.component';
 import { SwimFormComponent } from './swim-form/swim-form.component';
 import { FormAdderService } from './services/form-adder.service';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { MealTrackerComponent } from './meal-tracker/meal-tracker.component';
 
 const appRoutes: Routes = [
-  { path: 'sessions', component: SessionListComponent }
+  { path: 'sessions', component: SessionListComponent },
+  { path: 'tracker', component: MealTrackerComponent }
 ];
 
 @NgModule({
@@ -27,7 +30,9 @@ const appRoutes: Routes = [
     Session,
     Swim,
     SessionListComponent,
-    SwimFormComponent
+    SwimFormComponent,
+    DashboardComponent,
+    MealTrackerComponent,
   ],
   imports: [
     BrowserModule,

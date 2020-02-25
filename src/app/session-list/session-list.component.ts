@@ -15,9 +15,8 @@ export class SessionListComponent implements OnInit {
   addForm;
   showForm: boolean = false;
   sessions: Observable<any[]>;
-  whatever: any;
-
   numSessions: number;
+  
   constructor(
       public db: FirebaseService,
       public formAdder: FormAdderService,
@@ -32,14 +31,6 @@ export class SessionListComponent implements OnInit {
 
   ngOnInit() {
     this.sessions = this.db.getAll('sessions');
-    this.sessions.subscribe(result => {
-      this.whatever = result;
-    })
-  }
-
-  debug() {
-    console.log(this.sessions);
-    console.log(this.whatever);
   }
 
   onSubmit(sessionData) {
