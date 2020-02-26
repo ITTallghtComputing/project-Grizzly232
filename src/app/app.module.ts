@@ -17,6 +17,8 @@ import { SwimFormComponent } from './swim-form/swim-form.component';
 import { FormAdderService } from './services/form-adder.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MealTrackerComponent } from './meal-tracker/meal-tracker.component';
+import { MealComponent } from './meal/meal.component';
+import { MealFormComponent } from './meal-form/meal-form.component';
 
 const appRoutes: Routes = [
   { path: 'sessions', component: SessionListComponent },
@@ -33,6 +35,8 @@ const appRoutes: Routes = [
     SwimFormComponent,
     DashboardComponent,
     MealTrackerComponent,
+    MealComponent,
+    MealFormComponent,
   ],
   imports: [
     BrowserModule,

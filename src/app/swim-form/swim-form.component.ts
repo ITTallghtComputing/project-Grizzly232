@@ -22,11 +22,10 @@ export class SwimFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.sessionId);
+    
   }
 
   onSubmit(swimData) {
-    console.log("swim added");
     this.db.updateSession(this.sessionId, swimData);
     this.addForm.reset();
   }

@@ -10,7 +10,9 @@ import { Observable } from 'rxjs';
 })
 export class MealTrackerComponent implements OnInit {
 
+  showForm;
   days: Observable<any[]>;
+  whatever: any;
 
   constructor(
     public db: FirebaseService,
@@ -19,5 +21,13 @@ export class MealTrackerComponent implements OnInit {
 
   ngOnInit() {
     this.days = this.db.getAll('days');
+  }
+
+  addNewDay() {
+    this.db.addDay();
+  }
+
+  closeMealForm() {
+    this.showForm = false;
   }
 }

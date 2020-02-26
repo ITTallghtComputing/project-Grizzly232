@@ -13,7 +13,7 @@ import { SwimBinderService } from '../services/swim-binder.service';
 export class SessionListComponent implements OnInit {
 
   addForm;
-  showForm: boolean = false;
+  showForm = false;
   sessions: Observable<any[]>;
   numSessions: number;
   

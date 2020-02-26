@@ -1,0 +1,24 @@
+<form [formGroup]="addForm2" (ngSubmit)="onSubmit(addForm2.value)">
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-sm-4">
+                <label for="name">Name</label>
+                <input id="name" class="form-control" type="text" formControlName="name">
+            </div>
+            <div class="col-sm-4">
+                <label for="calories">Calories</label>
+                <input id="calories" class="form-control" type="text" formControlName="calories">
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-sm-6">
+                <button type="button" style="width: 100%" type="submit" class="btn btn-primary">Create</button>
+            </div>
+            <div class="col-sm-6">
+                <button type="button" style="width: 100%" (click)="cancel()" class="btn btn-secondary"
+                    data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</form>
