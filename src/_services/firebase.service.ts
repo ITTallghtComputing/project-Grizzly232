@@ -1,15 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 import { Subject } from 'rxjs';
-import { count } from 'rxjs/operators';
-import { map } from 'rxjs/operators';
-import { delay } from 'rxjs/operators'
-import { concatMap } from 'rxjs/operators';
-import { of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { firestore } from 'firebase';
-import { calcPossibleSecurityContexts } from '@angular/compiler/src/template_parser/binding_parser';
 
 @Injectable({
   providedIn: 'root'

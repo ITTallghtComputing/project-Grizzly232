@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FirebaseService } from '../services/firebase.service';
+import { FirebaseService } from '../../_services/firebase.service';
 import { FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 

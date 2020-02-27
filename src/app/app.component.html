@@ -1,19 +1,9 @@
 <div ng-app="swimApp" ng-controller="app.component.ts">
-  <!-- <h1>
-    whatever
-  </h1>
-  <ul>
-    <li class="text" *ngFor="let item of items | async">
-      {{item.field1}}
-    </li>
-  </ul>
-  <h1>Users:</h1>
-  <ul>
-    <li class="text" *ngFor="let user of users | async">
-      {{user.id}}
-      {{user.name}}
-    </li>
-  </ul>
-  <button (click)="add()">Add New User</button> -->
+  <nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="currentUser">
+    <div class="navbar-nav">
+      <a class="nav-item nav-link" routerLink="/">Home</a>
+      <a class="nav-item nav-link" (click)="logout()">Logout</a>
+    </div>
+  </nav>
 </div>
 <router-outlet></router-outlet>

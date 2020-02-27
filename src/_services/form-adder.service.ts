@@ -1,5 +1,5 @@
 import { ComponentFactoryResolver, Inject, ReflectiveInjector, Injectable, ViewContainerRef } from '@angular/core';
-import { SwimFormComponent } from '../swim-form/swim-form.component';
+import { SwimFormComponent } from '../app/swim-form/swim-form.component';
 
 @Injectable({
   providedIn: 'root'

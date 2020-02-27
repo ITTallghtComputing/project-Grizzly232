@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Swim } from '../swim/swim.component';
+import { Swim } from '../app/swim/swim.component';
 
 @Injectable({
   providedIn: 'root'

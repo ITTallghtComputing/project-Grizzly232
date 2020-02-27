@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FirebaseService } from '../services/firebase.service';
-import { SwimBinderService } from '../services/swim-binder.service';
+import { FirebaseService } from '../../_services/firebase.service';
+import { SwimBinderService } from '../../_services/swim-binder.service';
 import { FormBuilder } from '@angular/forms';
 
 @Component({

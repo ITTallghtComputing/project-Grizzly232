@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
-import { FirebaseService } from '../services/firebase.service';
+import { FirebaseService } from '../../_services/firebase.service';
 import { FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { FormAdderService } from '../services/form-adder.service';
-import { SwimBinderService } from '../services/swim-binder.service';
+import { FormAdderService } from '../../_services/form-adder.service';
+import { SwimBinderService } from '../../_services/swim-binder.service';
 
 @Component({
   selector: 'app-session-list',

@@ -4,6 +4,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule, Routes } from '@angular/router';
 import { AngularFireModule } from '@angular/fire';
 import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { fakeBackendProvider } from './../_helpers/fake-backend';
+import { JwtInterceptor } from './../_helpers/jwt.interceptor';
+import { ErrorInterceptor } from './../_helpers/error.interceptor'
 import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -14,15 +18,24 @@ import { Session } from './session/session.component';
 import { Swim } from './swim/swim.component';
 import { SessionListComponent } from './session-list/session-list.component';
 import { SwimFormComponent } from './swim-form/swim-form.component';
-import { FormAdderService } from './services/form-adder.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MealTrackerComponent } from './meal-tracker/meal-tracker.component';
 import { MealComponent } from './meal/meal.component';
 import { MealFormComponent } from './meal-form/meal-form.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { CalendarComponent } from './calendar/calendar.component';
+import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component'
+import { AuthGuard } from './../_helpers/auth.guard'
 
 const appRoutes: Routes = [
+  { path: '', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: 'login', component: LoginComponent },
   { path: 'sessions', component: SessionListComponent },
-  { path: 'tracker', component: MealTrackerComponent }
+  { path: 'tracker', component: MealTrackerComponent },
+  //keep this one at the bottom
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
@@ -37,6 +50,9 @@ const appRoutes: Routes = [
     MealTrackerComponent,
     MealComponent,
     MealFormComponent,
+    CalendarComponent,
+    HomeComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,9 +66,15 @@ const appRoutes: Routes = [
     AngularFirestoreModule,
     NgbModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule,
+    CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    fakeBackendProvider,
+  ],
   bootstrap: [AppComponent],
   entryComponents: [SwimFormComponent]
 })

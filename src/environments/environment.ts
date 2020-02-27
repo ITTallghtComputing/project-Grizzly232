@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  apiUrl: "http://localhost:4000",
   firebase: {
     apiKey: "AIzaSyAvgAdnejzqDmSwz2USui_-Gfu4jSHh-v4",
     authDomain: "swimapp-d4f4a.firebaseapp.com",

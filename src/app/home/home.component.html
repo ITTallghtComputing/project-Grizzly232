@@ -1,0 +1,38 @@
+<div class="card mt-4">
+    <h4 *ngIf="!users" class="card-header">Welcome</h4>
+    <h4 *ngIf="users" class="card-header">Welcome back, {{ users[0].firstName }}</h4>
+    <div class="card-body">
+        <div class="jumbotron">
+            <h3 class="display-5">Start tracking your workout routine</h3>
+            <p class="lead">Our meal and workout tracker will help you monitor your fitness.</p>
+            <p class="lead">
+                <a class="btn btn-success btn-lg" href="/tracker" role="button">Learn more</a>
+            </p>
+        </div>
+        <div class="jumbotron">
+            <div style="text-align: right">
+                <h3 class="display-5">Connect with your Fitbit</h3>
+                <p class="lead">Easily connect with your fitbit for live, accurate stats.</p>
+                <p class="lead">
+                    <a class="btn btn-success btn-lg" href="#" role="button">Learn more</a>
+                </p>
+            </div>
+        </div>
+        <div class="jumbotron">
+            <h3 class="display-5">View your fitness dashboard</h3>
+            <p class="lead">Track your fitness journey with graphs, charts and other visuals.</p>
+            <p class="lead">
+                <a class="btn btn-success btn-lg" href="#" role="button">Learn more</a>
+            </p>
+        </div>
+        <div class="jumbotron">
+            <div style="text-align: right">
+                <h3 class="display-5">Chat with other fitness enthusiasts</h3>
+                <p class="lead">Use our forum for tips, tricks and casual chat.</p>
+                <p class="lead">
+                    <a class="btn btn-success btn-lg" href="#" role="button">Learn more</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
