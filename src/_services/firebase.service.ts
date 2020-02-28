@@ -28,8 +28,21 @@ export class FirebaseService {
     })
   }
 
+  isDayFilled(date) {
+    let dayRef = this.db.collection('days');
+    let allDays = dayRef.get();
+    let x;
+    allDays.forEach(doc => {
+      doc.forEach(inner => {
+        if(JSON.stringify(inner.data()["date"]) == JSON.stringify(date)) {
+          return true;
+        }
+      })
+    })
+  }
+
   count(collection) {
-    
+
   }
 
   addDay() {

@@ -12,10 +12,14 @@ import {
 } from 'date-fns';
 import { Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FirebaseService} from './../../_services/firebase.service';
 import {
   CalendarEvent,
   CalendarView
 } from 'angular-calendar';
+import { firestore } from 'firebase';
+
+declare var $: any;
 
 const colors: any = {
   green: {
@@ -39,7 +43,8 @@ const colors: any = {
   templateUrl: './calendar.component.html'
 })
 export class CalendarComponent {
-  @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
+  
+  @ViewChild('dayModal', { static: true }) dayModal: any;
 
   view: CalendarView = CalendarView.Month;
 
@@ -64,7 +69,7 @@ export class CalendarComponent {
 
   activeDayIsOpen: boolean = true;
 
-  constructor(private modal: NgbModal) { }
+  constructor(private modal: NgbModal, public db: FirebaseService) { }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
@@ -86,5 +91,14 @@ export class CalendarComponent {
 
   closeOpenMonthViewDay() {
     this.activeDayIsOpen = false;
+  }
+
+  openDay(date) {
+    console.log(date);
+    console.log(this.viewDate);
+    let x = firestore.Timestamp.fromDate(date.date);
+    //this.dayModal.open()
+    $('#dayModal').modal('show')
+    console.log(this.db.isDayFilled(x));
   }
 }
