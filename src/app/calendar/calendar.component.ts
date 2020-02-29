@@ -2,7 +2,8 @@ import {
   Component,
   ChangeDetectionStrategy,
   ViewChild,
-  TemplateRef
+  EventEmitter,
+  Output
 } from '@angular/core';
 import {
   startOfDay,
@@ -45,8 +46,10 @@ const colors: any = {
 export class CalendarComponent {
   
   @ViewChild('dayModal', { static: true }) dayModal: any;
+  @Output() dayOpened = new EventEmitter<boolean>();
 
   view: CalendarView = CalendarView.Month;
+  dateToPass: Date;
 
   CalendarView = CalendarView;
 
@@ -94,11 +97,11 @@ export class CalendarComponent {
   }
 
   openDay(date) {
-    console.log(date);
-    console.log(this.viewDate);
+    this.dateToPass = date.date;
     let x = firestore.Timestamp.fromDate(date.date);
-    //this.dayModal.open()
     $('#dayModal').modal('show')
-    console.log(this.db.isDayFilled(x));
+    this.dayOpened.emit(date.date);
+    console.log(this.dateToPass);
+    //console.log(this.db.isDayFilled(x));
   }
 }
