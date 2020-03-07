@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { firestore } from 'firebase';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseService {
+
+  currentDay: firestore.DocumentReference;
 
   constructor(public db: AngularFirestore) { }
 
@@ -55,22 +59,19 @@ export class FirebaseService {
     })
   }
 
-  async getDay(date: firestore.Timestamp): Promise<firestore.DocumentReference> {
-    try {
-      let dayRef = await this.db.collection('days');
-      let allDays = await dayRef.get();
-      return await new Promise<firestore.DocumentReference>(function (resolve, reject) {
-        allDays.forEach(doc => {
-          doc.forEach(inner => {
-            if (JSON.stringify(inner.data()["date"]) == JSON.stringify(date)) {
-              resolve(inner.ref);
-            }
-          })
-        })
-      });
-    } catch (err) {
-      console.log(err);
-    }
+  getDay(date: firestore.Timestamp) {
+    return this.db.collection('days', ref => ref.where('date', '==', date)).valueChanges();
+  }
+
+  getSessions(date: firestore.Timestamp) {
+    const docRef = new Subject<firestore.Timestamp>();
+    const queryObservable = docRef.pipe(
+      switchMap(docRef =>
+        this.db.collection('days', ref => ref.where('date', '==', date)).snapshotChanges()
+      )
+    )
+    docRef.next(date);
+    return queryObservable;
   }
 
   updateSession(key, value) {
@@ -83,7 +84,7 @@ export class FirebaseService {
 
     queryObservable.subscribe(query => {
       console.log(query);
-      this.db.collection('sessions').doc(query[0].payload.doc.id).update({ swims: firestore.FieldValue.arrayUnion(value) });
+      return this.db.collection('sessions').doc(query[0].payload.doc.id).update({ swims: firestore.FieldValue.arrayUnion(value) });
     })
     size$.next('1');
   }

@@ -1,25 +1,38 @@
 import { Injectable } from '@angular/core';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DateHandlerService {
 
-  constructor() { }
-  months: ["January", "February", "March",
+  months: String[] = ["January", "February", "March",
   "April", "May", "June", "July",
   "August", "September", "October",
   "November", "December"];
-  days: ["Monday", "Tuesday", "Wednesday", 
-  "Thursday", "Friday", "Saturday", "Sunday"];
+  days: String[] = ["Sunday", "Monday", "Tuesday", "Wednesday", 
+  "Thursday", "Friday", "Saturday"];
 
-  convertToOutDate(date) {
-    let out;
+  constructor() { }
+
+  convertToOutDate(date: Date) {
+    let out = "";
     console.log(date);
-    out += date.getFullYear();
-    out += date.getMonth();
-    out += date.getDay()
-    console.log(out);
+    let tempDate = date.getDate().toString();
+    switch(tempDate) {
+      case("1"):
+        tempDate += "st";
+        break;
+      case("2"):
+        tempDate += "nd";
+        break;
+      case("3"):
+        tempDate += "rd";
+        break;
+      default:
+        tempDate += "th"
+    }
+    out += this.days[date.getDay()] + ", " + tempDate + " of " + this.months[date.getMonth()] + ", " + date.getFullYear();
     return out;
   }
 }
