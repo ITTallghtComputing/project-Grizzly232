@@ -98,7 +98,6 @@ export class CalendarComponent {
 
   openDay(date) {
     this.dateToPass = date.date;
-    let x = firestore.Timestamp.fromDate(date.date);
     $('#dayModal').modal('show')
     this.dayOpened.emit(date.date);
     console.log(this.dateToPass);

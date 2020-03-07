@@ -16,9 +16,9 @@ export class DateHandlerService {
   convertToOutDate(date) {
     let out;
     console.log(date);
-    // out += date.getYear();
-    // out += this.months[date.getMonth()];
-    // out += this.days[date.getDay()];
+    out += date.getFullYear();
+    out += date.getMonth();
+    out += date.getDay()
     console.log(out);
     return out;
   }

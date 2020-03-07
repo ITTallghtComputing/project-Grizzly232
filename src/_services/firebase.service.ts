@@ -33,11 +33,16 @@ export class FirebaseService {
     let allDays = dayRef.get();
     allDays.forEach(doc => {
       doc.forEach(inner => {
-        if(JSON.stringify(inner.data()["date"]) == JSON.stringify(date)) {
+        if (JSON.stringify(inner.data()["date"]) == JSON.stringify(date)) {
           return true;
         }
       })
     })
+  }
+
+  convertToTimestamp(date) {
+    console.log(date);
+    return firestore.Timestamp.fromMillis(date);
   }
 
   count(collection) {
@@ -48,6 +53,24 @@ export class FirebaseService {
     return this.db.collection('days').add({
       id: this.count('days')
     })
+  }
+
+  async getDay(date: firestore.Timestamp): Promise<firestore.DocumentReference> {
+    try {
+      let dayRef = await this.db.collection('days');
+      let allDays = await dayRef.get();
+      return await new Promise<firestore.DocumentReference>(function (resolve, reject) {
+        allDays.forEach(doc => {
+          doc.forEach(inner => {
+            if (JSON.stringify(inner.data()["date"]) == JSON.stringify(date)) {
+              resolve(inner.ref);
+            }
+          })
+        })
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   updateSession(key, value) {
