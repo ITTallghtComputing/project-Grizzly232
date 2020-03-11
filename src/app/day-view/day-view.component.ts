@@ -19,7 +19,7 @@ export class DayViewComponent implements OnInit {
   };
 
   day: Observable<any[]>;
-  sessions: any;
+  sessions: Observable<any[]>;
   meals: Observable<any[]>;
   dateString: string;
   dateFirebase: firestore.Timestamp;
@@ -32,6 +32,7 @@ export class DayViewComponent implements OnInit {
   getDay() {
     this.day = this.db.getDay(this.dateFirebase);
     this.sessions = this.db.getSessions(this.dateFirebase);
+    this.meals = this.db.getMeals(this.dateFirebase);
   }
 
   private onDateChanged(date: Date): void {

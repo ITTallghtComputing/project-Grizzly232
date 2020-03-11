@@ -11,7 +11,7 @@ import { firestore } from 'firebase';
 })
 export class FirebaseService {
 
-  currentDay: firestore.DocumentReference;
+  currentDay: string;
 
   constructor(public db: AngularFirestore) { }
 
@@ -45,7 +45,6 @@ export class FirebaseService {
   }
 
   convertToTimestamp(date) {
-    console.log(date);
     return firestore.Timestamp.fromMillis(date);
   }
 
@@ -59,19 +58,29 @@ export class FirebaseService {
     })
   }
 
+  async setFromObservable(val: string) {
+    console.log("val " + val);
+    this.currentDay = val;
+  }
+
   getDay(date: firestore.Timestamp) {
+    // get snapshot changes first so that we can store the doc ID for later
+    this.db.collection('days', ref => ref.where('date', '==', date)).snapshotChanges().subscribe(docRef => {
+      this.setFromObservable(docRef[0].payload.doc.id);
+    });
     return this.db.collection('days', ref => ref.where('date', '==', date)).valueChanges();
   }
 
   getSessions(date: firestore.Timestamp) {
-    const docRef = new Subject<firestore.Timestamp>();
-    const queryObservable = docRef.pipe(
-      switchMap(docRef =>
-        this.db.collection('days', ref => ref.where('date', '==', date)).snapshotChanges()
-      )
-    )
-    docRef.next(date);
-    return queryObservable;
+    return this.db.collection('days', ref => ref.where('date', '==', date)).snapshotChanges().pipe(switchMap(docRef => {
+      return this.db.collection('days').doc(docRef[0].payload.doc.id).collection('sessions').valueChanges();
+    }))
+  }
+
+  getMeals(date: firestore.Timestamp) {
+    return this.db.collection('days', ref => ref.where('date', '==', date)).snapshotChanges().pipe(switchMap(docRef => {
+      return this.db.collection('days').doc(docRef[0].payload.doc.id).collection('meals').valueChanges();
+    }))
   }
 
   updateSession(key, value) {
@@ -102,10 +111,6 @@ export class FirebaseService {
       this.db.collection('days').doc(query[0].payload.doc.id).update({ meals: firestore.FieldValue.arrayUnion(value) });
     })
     size$.next('1');
-  }
-
-  getMeals(id) {
-    return this.db.collection('meals', ref => ref.where('id', '==', id)).valueChanges()
   }
 
   getAll(type: string) {

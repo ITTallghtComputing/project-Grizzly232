@@ -17,7 +17,6 @@ export class DateHandlerService {
 
   convertToOutDate(date: Date) {
     let out = "";
-    console.log(date);
     let tempDate = date.getDate().toString();
     switch(tempDate) {
       case("1"):

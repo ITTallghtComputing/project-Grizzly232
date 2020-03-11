@@ -13,7 +13,12 @@
                     <p><strong>Burned</strong> {{ item.caloriesBurned }} calories</p>
                     <p><strong>Gained</strong> {{ item.caloriesGained }} calories</p>
                     <div *ngFor="let session of sessions | async">
-                        {{ session }}
+                        Session
+                        {{ session.activity }}
+                    </div>
+                    <div *ngFor="let meal of meals | async">
+                        Meal
+                        {{ meal.name }}
                     </div>
                 </div>
             </div>
