@@ -29,13 +29,15 @@ import { CalendarComponent } from './calendar/calendar.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component'
 import { AuthGuard } from './../_helpers/auth.guard';
-import { DayViewComponent } from './day-view/day-view.component'
+import { DayViewComponent } from './day-view/day-view.component';
+import { DayDetailComponent } from './day-detail/day-detail.component'
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'sessions', component: SessionListComponent },
   { path: 'tracker', component: MealTrackerComponent },
+  { path: 'day', component: DayDetailComponent },
   //keep this one at the bottom
   { path: '**', redirectTo: '' }
 ];
@@ -56,6 +58,7 @@ const appRoutes: Routes = [
     HomeComponent,
     LoginComponent,
     DayViewComponent,
+    DayDetailComponent,
   ],
   imports: [
     BrowserModule,

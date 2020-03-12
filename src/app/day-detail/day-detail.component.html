@@ -1,0 +1,17 @@
+<div>
+    hello fren
+    <div *ngFor="let item of day | async">
+        <h6>On this day, you: </h6>
+        <p><strong>Burned</strong> {{ item.caloriesBurned }} calories</p>
+        <p><strong>Gained</strong> {{ item.caloriesGained }} calories</p>
+        <div *ngFor="let session of sessions | async">
+            Session
+            {{ session.activity }}
+        </div>
+        <div *ngFor="let meal of meals | async">
+            Meal
+            {{ meal.name }}
+        </div>
+    </div>
+</div>
+<router-outlet></router-outlet>
