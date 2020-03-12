@@ -37,7 +37,7 @@ const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'sessions', component: SessionListComponent },
   { path: 'tracker', component: MealTrackerComponent },
-  { path: 'day', component: DayDetailComponent },
+  { path: 'day/:date', component: DayDetailComponent },
   //keep this one at the bottom
   { path: '**', redirectTo: '' }
 ];

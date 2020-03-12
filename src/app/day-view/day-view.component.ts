@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { DateHandlerService } from './../../_services/date-handler.service';
 import { FirebaseService } from "./../../_services/firebase.service";
 import { firestore } from 'firebase';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 import 'firebase/firestore';
 
 declare var $: any;
@@ -21,9 +22,11 @@ export class DayViewComponent implements OnInit {
   day: Observable<any[]>;
   sessions: Observable<any[]>;
   meals: Observable<any[]>;
+  dateUntouched : Date;
   dateString: string;
   dateFirebase: firestore.Timestamp;
-  constructor(public dateHandler: DateHandlerService, public db: FirebaseService) { }
+  dateRoute: string;
+  constructor(public dateHandler: DateHandlerService, public db: FirebaseService, public router: Router) { }
 
   ngOnInit() {
     // $('#dayModal').on('shown.bs.modal', this.getDateString());
@@ -38,8 +41,14 @@ export class DayViewComponent implements OnInit {
   private onDateChanged(date: Date): void {
     if (date != null) {
       this.dateString = this.dateHandler.convertToOutDate(date);
+      this.dateUntouched = date;
       this.dateFirebase = this.db.convertToTimestamp(date);
       this.getDay();
     }
+  }
+
+  navigateToDetail() {
+    this.dateRoute = this.dateHandler.convertToRouteDate(this.dateUntouched)
+    this.router.navigate(['/day', this.dateRoute]);
   }
 }
