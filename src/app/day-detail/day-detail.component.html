@@ -4,13 +4,24 @@
         <h6>On this day, you: </h6>
         <p><strong>Burned</strong> {{ item.caloriesBurned }} calories</p>
         <p><strong>Gained</strong> {{ item.caloriesGained }} calories</p>
-        <div *ngFor="let session of sessions | async">
-            Session
-            {{ session.activity }}
-        </div>
-        <div *ngFor="let meal of meals | async">
-            Meal
-            {{ meal.name }}
+        <div class="row">
+            <div class="card col-sm-6">
+                <div class="card-header">Sessions</div>
+                <div class="card-body">
+                    <div *ngFor="let session of sessions | async; let i = index">
+                        <h5>Session {{i + 1}}</h5>
+                        <p>You did <strong>{{ session.activity }}</strong> for {{ session.time }} minutes.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card col-sm-6">
+                <div class="card-header">Meals</div>
+                <div class="card-body">
+                    <div *ngFor="let meal of meals | async">
+                        
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

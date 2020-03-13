@@ -29,7 +29,6 @@ export class DayDetailComponent implements OnInit {
     )
     
     this.date.subscribe(date => {
-      console.log(date);
       let tempDate = this.dateHandler.convertToFirebaseDate(date);
       this.day = this.db.getDay(tempDate);
       this.sessions = this.db.getSessions(tempDate);
