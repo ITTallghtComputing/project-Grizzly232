@@ -32,16 +32,10 @@ export class FirebaseService {
     })
   }
 
-  isDayFilled(date) {
-    let dayRef = this.db.collection('days');
-    let allDays = dayRef.get();
-    allDays.forEach(doc => {
-      doc.forEach(inner => {
-        if (JSON.stringify(inner.data()["date"]) == JSON.stringify(date)) {
-          return true;
-        }
-      })
-    })
+  isDayFilled(date) : Observable<boolean> {
+    return this.db.collection('days', ref => ref.where('date', '==', date)).valueChanges().pipe(map(docRef => {
+      return docRef.length == 0;
+    }))
   }
 
   convertToTimestamp(date) {
@@ -52,22 +46,18 @@ export class FirebaseService {
 
   }
 
-  addDay() {
+  addDay(date: firestore.Timestamp) {
     return this.db.collection('days').add({
-      id: this.count('days')
+      date: date,
+      caloriesBurned: 0,
+      caloriesGained: 0,
+      sessions: 0,
+      sessionTime: 0,
+      meals: 0
     })
   }
 
-  async setFromObservable(val: string) {
-    console.log("val " + val);
-    this.currentDay = val;
-  }
-
   getDay(date: firestore.Timestamp) {
-    // get snapshot changes first so that we can store the doc ID for later
-    this.db.collection('days', ref => ref.where('date', '==', date)).snapshotChanges().subscribe(docRef => {
-      this.setFromObservable(docRef[0].payload.doc.id);
-    });
     return this.db.collection('days', ref => ref.where('date', '==', date)).valueChanges();
   }
 

@@ -100,7 +100,5 @@ export class CalendarComponent {
     this.dateToPass = date.date;
     $('#dayModal').modal('show')
     this.dayOpened.emit(date.date);
-    console.log(this.dateToPass);
-    //console.log(this.db.isDayFilled(x));
   }
 }

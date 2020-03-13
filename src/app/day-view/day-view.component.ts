@@ -22,7 +22,7 @@ export class DayViewComponent implements OnInit {
   day: Observable<any[]>;
   sessions: Observable<any[]>;
   meals: Observable<any[]>;
-  dateUntouched : Date;
+  dateUntouched: Date;
   dateString: string;
   dateFirebase: firestore.Timestamp;
   dateRoute: string;
@@ -33,6 +33,10 @@ export class DayViewComponent implements OnInit {
   }
 
   getDay() {
+    this.db.isDayFilled(this.dateFirebase).subscribe(result => {
+      if(result)
+        this.db.addDay(this.dateFirebase);
+    });
     this.day = this.db.getDay(this.dateFirebase);
     this.sessions = this.db.getSessions(this.dateFirebase);
     this.meals = this.db.getMeals(this.dateFirebase);
@@ -48,6 +52,7 @@ export class DayViewComponent implements OnInit {
   }
 
   navigateToDetail() {
+    $('#dayModal').modal('hide')
     this.dateRoute = this.dateHandler.convertToRouteDate(this.dateUntouched)
     this.router.navigate(['/day', this.dateRoute]);
   }

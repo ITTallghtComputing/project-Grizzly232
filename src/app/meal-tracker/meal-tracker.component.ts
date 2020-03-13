@@ -24,7 +24,7 @@ export class MealTrackerComponent implements OnInit {
   }
 
   addNewDay() {
-    this.db.addDay();
+    //this.db.addDay();
   }
 
   closeMealForm() {

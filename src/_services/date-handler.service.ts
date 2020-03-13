@@ -42,6 +42,9 @@ export class DateHandlerService {
   convertToRouteDate(date: Date) : string {
     let route = "";
     route += date.getFullYear() + "-";
+    let month = date.getMonth();
+    if(month < 9)
+      route += "0"
     route += (date.getMonth() + 1) + "-";
     route += date.getDate();
     return route;
