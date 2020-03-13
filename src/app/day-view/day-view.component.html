@@ -8,6 +8,10 @@
                 </button>
             </div>
             <div class="modal-body">
+                <div *ngIf="dayFilled | async">
+                    <h5>You haven't logged anything for this day.</h5>
+                    <button type="button" class="btn btn-primary" (click)="addDay()">Add Log</button>
+                </div>
                 <div *ngFor="let item of day | async">
                     <h6>On this day, you: </h6>
                     <p><strong>Burned</strong> {{ item.caloriesBurned }} calories</p>

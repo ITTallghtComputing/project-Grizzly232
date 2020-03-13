@@ -26,6 +26,8 @@ export class DayViewComponent implements OnInit {
   dateString: string;
   dateFirebase: firestore.Timestamp;
   dateRoute: string;
+  dayFilled: Observable<boolean>;
+
   constructor(public dateHandler: DateHandlerService, public db: FirebaseService, public router: Router) { }
 
   ngOnInit() {
@@ -33,10 +35,6 @@ export class DayViewComponent implements OnInit {
   }
 
   getDay() {
-    this.db.isDayFilled(this.dateFirebase).subscribe(result => {
-      if(result)
-        this.db.addDay(this.dateFirebase);
-    });
     this.day = this.db.getDay(this.dateFirebase);
     this.sessions = this.db.getSessions(this.dateFirebase);
     this.meals = this.db.getMeals(this.dateFirebase);
@@ -47,6 +45,7 @@ export class DayViewComponent implements OnInit {
       this.dateString = this.dateHandler.convertToOutDate(date);
       this.dateUntouched = date;
       this.dateFirebase = this.db.convertToTimestamp(date);
+      this.dayFilled = this.db.isDayFilled(this.dateFirebase);
       this.getDay();
     }
   }
@@ -55,5 +54,9 @@ export class DayViewComponent implements OnInit {
     $('#dayModal').modal('hide')
     this.dateRoute = this.dateHandler.convertToRouteDate(this.dateUntouched)
     this.router.navigate(['/day', this.dateRoute]);
+  }
+
+  addDay() {
+    this.db.addDay(this.dateFirebase);
   }
 }
