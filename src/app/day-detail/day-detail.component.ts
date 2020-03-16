@@ -4,6 +4,7 @@ import { DateHandlerService } from './../../_services/date-handler.service';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { map } from 'rxjs/operators';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-day-detail',
@@ -15,11 +16,28 @@ export class DayDetailComponent implements OnInit {
   @Input() day: Observable<any[]>;
   @Input() sessions: Observable<any[]>;
   @Input() meals: Observable<any[]>;
+  activities: Observable<any[]>;
 
   date: Observable<string>;
   dateString: string;
 
-  constructor(public db: FirebaseService, public route: ActivatedRoute, public dateHandler: DateHandlerService) { }
+  mealForm: FormGroup;
+  activityForm: FormGroup;
+
+  constructor(public db: FirebaseService, 
+    public route: ActivatedRoute, 
+    public dateHandler: DateHandlerService, 
+    public builder: FormBuilder) { 
+      this.mealForm = this.builder.group({
+        name: '',
+        calories: 0
+      })
+      this.activityForm = this.builder.group({
+        activity: '',
+        caloriesBurned: 0,
+        duration: 0
+      })
+    }
 
   ngOnInit() {
     this.date = this.route.paramMap.pipe(
@@ -35,5 +53,13 @@ export class DayDetailComponent implements OnInit {
       this.meals = this.db.getMeals(tempDate);
       this.dateString = this.dateHandler.convertToOutDate(new Date(date));
     })
+  }
+
+  onActivitySubmit(values: any) {
+    this.db.addActivity(values, this.dateHandler.convertToFirebaseDate(this.dateString));
+  }
+
+  onMealSubmit(values: any) {
+
   }
 }

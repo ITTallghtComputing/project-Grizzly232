@@ -6,20 +6,68 @@
         <p><strong>Gained</strong> {{ item.caloriesGained }} calories</p>
         <div class="row">
             <div class="card col-sm-6">
-                <div class="card-header">Sessions</div>
-                <div class="card-body">
-                    <div *ngFor="let session of sessions | async; let i = index">
-                        <h5>Session {{i + 1}}</h5>
-                        <p>You did <strong>{{ session.activity }}</strong> for {{ session.time }} minutes.</p>
-                    </div>
+                <div class="card-header"><span class="headers">Sessions</span>
+                    <button type="button" class="btn btn-primary addBtns">New Activity</button>
                 </div>
+  
+                <div class="card-body">
+                        <form [formGroup]="activityForm" class="form-group"
+                        (ngSubmit)="onActivitySubmit(activityForm.values)">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Activity</th>
+                                    <th scope="col">Calories Burned</th>
+                                    <th scope="col">Duration (Minutes)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngFor="let session of sessions | async; let i = index">
+                                    <tr>
+                                        <td>{{ session.activity }}</td>
+                                        <td>{{ session.caloriesBurned }}</td>
+                                        <td>{{ session.duration }}</td>
+                                    </tr>
+                                </ng-container>
+                                <tr>
+                                        <td><input id="activity"
+                                                formControlName="activity" type="text" placeholder="Activity"
+                                                class="form-control"></td>
+                                        <td><input
+                                                id="caloriesBurned" formControlName="caloriesBurned" type="number"
+                                                placeholder="Calories Burned" class="form-control"></td>
+                                        <td><input id="duration"
+                                                formControlName="duration" type="number"
+                                                placeholder="Duration in minutes" class="form-control"></td>
+                                    <button type="submit" class="btn btn-success">Add</button>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                
             </div>
             <div class="card col-sm-6">
-                <div class="card-header">Meals</div>
+                <div class="card-header"><span class="headers">Meals</span>
+                    <button type="button" class="btn btn-primary addBtns">New Meal</button>
+                </div>
                 <div class="card-body">
-                    <div *ngFor="let meal of meals | async">
-                        
-                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Calories Gained</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let meal of meals | async">
+                                <tr>
+                                    <td>{{ meal.name }}</td>
+                                    <td>{{ meal.calories }}</td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

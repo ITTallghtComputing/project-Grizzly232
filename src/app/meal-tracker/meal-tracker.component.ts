@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from '../../_services/firebase.service';
 import { FormBuilder } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs'; 
 
 @Component({
   selector: 'app-meal-tracker',

@@ -63,13 +63,19 @@ export class FirebaseService {
 
   getSessions(date: firestore.Timestamp) {
     return this.db.collection('days', ref => ref.where('date', '==', date)).snapshotChanges().pipe(switchMap(docRef => {
-      return this.db.collection('days').doc(docRef[0].payload.doc.id).collection('sessions').valueChanges();
+      return this.db.collection('days').doc(docRef[0].payload.doc.id).collection('session').valueChanges();
     }))
   }
 
   getMeals(date: firestore.Timestamp) {
     return this.db.collection('days', ref => ref.where('date', '==', date)).snapshotChanges().pipe(switchMap(docRef => {
       return this.db.collection('days').doc(docRef[0].payload.doc.id).collection('meals').valueChanges();
+    }))
+  }
+
+  addActivity(value, date) {
+    return this.db.collection('days', ref => ref.where('date', '==', date)).snapshotChanges().pipe(switchMap(docRef => {
+      return this.db.collection('days').doc(docRef[0].payload.doc.id).collection('session').doc('3').set(value);
     }))
   }
 

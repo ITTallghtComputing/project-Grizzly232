@@ -7,5 +7,15 @@ h3 {
 }
 
 .card-header {
-    background-color: lightgreen;
+    background-color: rgb(46, 43, 38);
+}
+
+.addBtns {
+    float: right;
+    text-align: right;
+}
+
+.headers {
+    font-size: 24px;
+    color: rgb(187, 184, 184);
 }
