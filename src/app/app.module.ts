@@ -31,6 +31,7 @@ import { LoginComponent } from './login/login.component'
 import { AuthGuard } from './../_helpers/auth.guard';
 import { DayViewComponent } from './day-view/day-view.component';
 import { DayDetailComponent } from './day-detail/day-detail.component'
+import { AgGridModule } from 'ag-grid-angular';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -75,7 +76,8 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     HttpClientModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    AgGridModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

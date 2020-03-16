@@ -79,6 +79,15 @@ export class FirebaseService {
     }))
   }
 
+  updateActivity(value, index, date: firestore.Timestamp) {
+    return this.db.collection('days').doc('QZx9r9IWM8N7Yq4hF6di').collection('session').doc(index.toString()).update(value);
+  }
+
+  updateMeal(value, index, date: firestore.Timestamp) {
+    console.log(index);
+    return this.db.collection('days').doc('QZx9r9IWM8N7Yq4hF6di').collection('meals').doc(index.toString()).update(value);
+  }
+
   updateSession(key, value) {
     const size$ = new Subject<string>();
     const queryObservable = size$.pipe(
