@@ -11,7 +11,7 @@ import { firestore } from 'firebase';
 })
 export class FirebaseService {
 
-  currentDay: string;
+  currentDay: Observable<any[]>;
 
   constructor(public db: AngularFirestore) { }
 
@@ -32,7 +32,7 @@ export class FirebaseService {
     })
   }
 
-  isDayFilled(date) : Observable<boolean> {
+  isDayFilled(date): Observable<boolean> {
     return this.db.collection('days', ref => ref.where('date', '==', date)).valueChanges().pipe(map(docRef => {
       return docRef.length == 0;
     }))
@@ -58,34 +58,48 @@ export class FirebaseService {
   }
 
   getDay(date: firestore.Timestamp) {
+    this.currentDay = this.db.collection('days', ref => ref.where('date', '==', date)).snapshotChanges();
     return this.db.collection('days', ref => ref.where('date', '==', date)).valueChanges();
   }
 
   getSessions(date: firestore.Timestamp) {
-    return this.db.collection('days', ref => ref.where('date', '==', date)).snapshotChanges().pipe(switchMap(docRef => {
+    return this.currentDay.pipe(switchMap(docRef => {
       return this.db.collection('days').doc(docRef[0].payload.doc.id).collection('session').valueChanges();
     }))
   }
 
   getMeals(date: firestore.Timestamp) {
-    return this.db.collection('days', ref => ref.where('date', '==', date)).snapshotChanges().pipe(switchMap(docRef => {
+    return this.currentDay.pipe(switchMap(docRef => {
       return this.db.collection('days').doc(docRef[0].payload.doc.id).collection('meals').valueChanges();
     }))
   }
 
-  addActivity(value, date) {
-    return this.db.collection('days', ref => ref.where('date', '==', date)).snapshotChanges().pipe(switchMap(docRef => {
+  addActivity(value) {
+    return this.currentDay.pipe(switchMap(docRef => {
       return this.db.collection('days').doc(docRef[0].payload.doc.id).collection('session').doc('3').set(value);
     }))
   }
 
-  updateActivity(value, index, date: firestore.Timestamp) {
-    return this.db.collection('days').doc('QZx9r9IWM8N7Yq4hF6di').collection('session').doc(index.toString()).update(value);
+  updateActivity(value, index) {
+    return this.currentDay.subscribe(docRef => {
+      let ref = this.db.collection('days').doc(docRef[0].payload.doc.id).collection('session').doc(index.toString())
+      return this.db.firestore.runTransaction(function(transaction) {
+        return transaction.get(ref.ref).then(function() {
+          transaction.update(ref.ref, value);
+        })
+      })
+    })
   }
 
-  updateMeal(value, index, date: firestore.Timestamp) {
-    console.log(index);
-    return this.db.collection('days').doc('QZx9r9IWM8N7Yq4hF6di').collection('meals').doc(index.toString()).update(value);
+  updateMeal(value, index) {
+    return this.currentDay.subscribe(docRef => {
+      let ref = this.db.collection('days').doc(docRef[0].payload.doc.id).collection('meals').doc(index.toString())
+      return this.db.firestore.runTransaction(function(transaction) {
+        return transaction.get(ref.ref).then(function() {
+          transaction.update(ref.ref, value);
+        })
+      })
+    })
   }
 
   updateSession(key, value) {

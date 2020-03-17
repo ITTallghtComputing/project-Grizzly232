@@ -77,14 +77,18 @@ export class DayDetailComponent implements OnInit {
   }
 
   updateSession(row) {
-    this.db.updateActivity(this.sessionGrid.gridOptionsWrapper.gridOptions.rowData[row.rowIndex], row.rowIndex + 1, this.dateHandler.convertToFirebaseDate(this.dateString));
+    this.db.updateActivity(row.data, row.rowIndex + 1);
   }
 
   updateMeal(row) {
-    this.db.updateMeal(this.mealGrid.gridOptionsWrapper.gridOptions.rowData[row.rowIndex], row.rowIndex + 1, this.dateHandler.convertToFirebaseDate(this.dateString));
+    this.db.updateMeal(row.data, row.rowIndex + 1);
   }
 
-  onMealSubmit(values: any) {
+  onNewSession() {
+    this.sessionGrid.gridOptionsWrapper.gridOptions.api.updateRowData({ add: [{ activity: '', caloriesBurned: 0, duration: 0}]});
+  }
 
+  onNewMeal() {
+    this.mealGrid.gridOptionsWrapper.gridOptions.api.updateRowData({ add: [{ name: '', caloriesGained: 0}]});
   }
 }

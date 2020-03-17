@@ -7,7 +7,7 @@
         <div class="row">
             <div class="card col-sm-6">
                 <div class="card-header"><span class="headers">Sessions</span>
-                    <button type="button" class="btn btn-primary addBtns">New Activity</button>
+                    <button type="button" class="btn btn-primary addBtns" (click)="onNewSession()">New Activity</button>
                 </div>
                 <div class="card-body">
                     <ag-grid-angular
@@ -25,7 +25,7 @@
             </div>
             <div class="card col-sm-6">
                 <div class="card-header"><span class="headers">Meals</span>
-                    <button type="button" class="btn btn-primary addBtns">New Meal</button>
+                    <button type="button" class="btn btn-primary addBtns" (click)="onNewMeal()">New Meal</button>
                 </div>
                 <div class="card-body">
                     <ag-grid-angular
