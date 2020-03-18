@@ -91,4 +91,20 @@ export class DayDetailComponent implements OnInit {
   onNewMeal() {
     this.mealGrid.gridOptionsWrapper.gridOptions.api.updateRowData({ add: [{ name: '', caloriesGained: 0}]});
   }
+
+  isSelected() {
+      return this.mealGrid.gridOptionsWrapper.gridOptions.api.getSelectedNodes().length == 0;
+  }
+
+  deleteActivity() {
+    let row = this.sessionGrid.gridOptionsWrapper.gridOptions.api.getSelectedNodes();
+    if(row.length != 0)
+      this.db.deleteActivity(parseInt(row[0].id) + 1);
+  }
+
+  deleteMeal() {
+    let row = this.mealGrid.gridOptionsWrapper.gridOptions.api.getSelectedNodes();
+    if(row.length != 0)
+      this.db.deleteMeal(parseInt(row[0].id) + 1);
+  }
 }

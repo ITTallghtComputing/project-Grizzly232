@@ -85,7 +85,7 @@ export class FirebaseService {
       let ref = this.db.collection('days').doc(docRef[0].payload.doc.id).collection('session').doc(index.toString())
       return this.db.firestore.runTransaction(function(transaction) {
         return transaction.get(ref.ref).then(function() {
-          transaction.update(ref.ref, value);
+          transaction.set(ref.ref, value);
         })
       })
     })
@@ -96,11 +96,35 @@ export class FirebaseService {
       let ref = this.db.collection('days').doc(docRef[0].payload.doc.id).collection('meals').doc(index.toString())
       return this.db.firestore.runTransaction(function(transaction) {
         return transaction.get(ref.ref).then(function() {
-          transaction.update(ref.ref, value);
+          transaction.set(ref.ref, value);
         })
       })
     })
   }
+
+  deleteActivity(index) {
+    console.log(index);
+    return this.currentDay.subscribe(docRef => {
+      let ref = this.db.collection('days').doc(docRef[0].payload.doc.id).collection('session').doc(index.toString())
+      return this.db.firestore.runTransaction(function(transaction) {
+        return transaction.get(ref.ref).then(function() {
+          transaction.delete(ref.ref);
+        })
+      }) 
+    })
+  } 
+
+  deleteMeal(index) {
+    console.log(index);
+    return this.currentDay.subscribe(docRef => {
+      let ref = this.db.collection('days').doc(docRef[0].payload.doc.id).collection('meals').doc(index.toString())
+      return this.db.firestore.runTransaction(function(transaction) {
+        return transaction.get(ref.ref).then(function() {
+          transaction.delete(ref.ref);
+        })
+      }) 
+    })
+  } 
 
   updateSession(key, value) {
     const size$ = new Subject<string>();
