@@ -107,25 +107,19 @@ export class FirebaseService {
   }
 
   deleteActivity(index) {
-    console.log(index);
-    return this.currentDay.subscribe(docRef => {
-      let ref = this.db.collection('days').doc(docRef[0].payload.doc.id).collection('session').doc(index.toString())
-      return this.db.firestore.runTransaction(function (transaction) {
-        return transaction.get(ref.ref).then(function () {
-          transaction.delete(ref.ref);
-        })
+    let ref = this.db.collection('days').doc(this.currentDayRef).collection('session').doc(index.toString())
+    return this.db.firestore.runTransaction(function (transaction) {
+      return transaction.get(ref.ref).then(function () {
+        transaction.delete(ref.ref);
       })
     })
   }
 
   deleteMeal(index) {
-    console.log(index);
-    return this.currentDay.subscribe(docRef => {
-      let ref = this.db.collection('days').doc(docRef[0].payload.doc.id).collection('meals').doc(index.toString())
-      return this.db.firestore.runTransaction(function (transaction) {
-        return transaction.get(ref.ref).then(function () {
-          transaction.delete(ref.ref);
-        })
+    let ref = this.db.collection('days').doc(this.currentDayRef).collection('meals').doc(index.toString())
+    return this.db.firestore.runTransaction(function (transaction) {
+      return transaction.get(ref.ref).then(function () {
+        transaction.delete(ref.ref);
       })
     })
   }
