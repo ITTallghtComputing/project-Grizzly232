@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Subject } from 'rxjs';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -12,6 +12,7 @@ import { firestore } from 'firebase';
 export class FirebaseService {
 
   currentDay: Observable<any[]>;
+  currentDayRef: string;
 
   constructor(public db: AngularFirestore) { }
 
@@ -51,14 +52,21 @@ export class FirebaseService {
       date: date,
       caloriesBurned: 0,
       caloriesGained: 0,
-      sessions: 0,
+      activities: 0,
       sessionTime: 0,
       meals: 0
     })
   }
 
+  setRef(ref) {
+    this.currentDayRef = ref;
+  }
+
   getDay(date: firestore.Timestamp) {
     this.currentDay = this.db.collection('days', ref => ref.where('date', '==', date)).snapshotChanges();
+    this.currentDay.subscribe(docRef => {
+      this.setRef(docRef[0].payload.doc.id);
+    })
     return this.db.collection('days', ref => ref.where('date', '==', date)).valueChanges();
   }
 
@@ -81,23 +89,19 @@ export class FirebaseService {
   }
 
   updateActivity(value, index) {
-    return this.currentDay.subscribe(docRef => {
-      let ref = this.db.collection('days').doc(docRef[0].payload.doc.id).collection('session').doc(index.toString())
-      return this.db.firestore.runTransaction(function(transaction) {
-        return transaction.get(ref.ref).then(function() {
-          transaction.set(ref.ref, value);
-        })
+    let docRef = this.db.collection('days').doc(this.currentDayRef).collection('session').doc(index.toString());
+    return this.db.firestore.runTransaction(function (transaction) {
+      return transaction.get(docRef.ref).then(function () {
+        transaction.set(docRef.ref, value);
       })
     })
   }
 
   updateMeal(value, index) {
-    return this.currentDay.subscribe(docRef => {
-      let ref = this.db.collection('days').doc(docRef[0].payload.doc.id).collection('meals').doc(index.toString())
-      return this.db.firestore.runTransaction(function(transaction) {
-        return transaction.get(ref.ref).then(function() {
-          transaction.set(ref.ref, value);
-        })
+    let docRef = this.db.collection('days').doc(this.currentDayRef).collection('meals').doc(index.toString())
+    return this.db.firestore.runTransaction(function (transaction) {
+      return transaction.get(docRef.ref).then(function () {
+        transaction.set(docRef.ref, value);
       })
     })
   }
@@ -106,25 +110,25 @@ export class FirebaseService {
     console.log(index);
     return this.currentDay.subscribe(docRef => {
       let ref = this.db.collection('days').doc(docRef[0].payload.doc.id).collection('session').doc(index.toString())
-      return this.db.firestore.runTransaction(function(transaction) {
-        return transaction.get(ref.ref).then(function() {
+      return this.db.firestore.runTransaction(function (transaction) {
+        return transaction.get(ref.ref).then(function () {
           transaction.delete(ref.ref);
         })
-      }) 
+      })
     })
-  } 
+  }
 
   deleteMeal(index) {
     console.log(index);
     return this.currentDay.subscribe(docRef => {
       let ref = this.db.collection('days').doc(docRef[0].payload.doc.id).collection('meals').doc(index.toString())
-      return this.db.firestore.runTransaction(function(transaction) {
-        return transaction.get(ref.ref).then(function() {
+      return this.db.firestore.runTransaction(function (transaction) {
+        return transaction.get(ref.ref).then(function () {
           transaction.delete(ref.ref);
         })
-      }) 
+      })
     })
-  } 
+  }
 
   updateSession(key, value) {
     const size$ = new Subject<string>();
