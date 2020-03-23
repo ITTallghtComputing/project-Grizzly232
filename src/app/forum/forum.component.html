@@ -1,0 +1,17 @@
+<div class="card">
+    <div class="card-header">
+        <h3>{{ currentCategory | async}}</h3>
+    </div>
+    <div class="card-body">
+        <div *ngFor="let post of posts | async; let i = index">
+            {{ i }}
+            <div class="card-header">
+                <a href="" class="post-header"><h5>{{ post.subject }}</h5></a>
+                <button class="btn btn-primary rightButton" type="button" data-toggle="collapse" [attr.data-target]="'#detail'+i">Preview</button>
+            </div>
+            <div class="card-body collapse" id="{{ 'detail'+i }}">
+                {{ post.text }}
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+.post-header {
+    color: black;
+}
+
+.post-header:hover {
+    color: grey;
+    text-decoration-line: none;
+}
+
+.rightButton {
+    text-align: right;
+}

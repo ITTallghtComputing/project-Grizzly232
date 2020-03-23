@@ -32,6 +32,8 @@ import { AuthGuard } from './../_helpers/auth.guard';
 import { DayViewComponent } from './day-view/day-view.component';
 import { DayDetailComponent } from './day-detail/day-detail.component'
 import { AgGridModule } from 'ag-grid-angular';
+import { ForumComponent } from './forum/forum.component';
+import { ForumListComponent } from './forum-list/forum-list.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -39,6 +41,8 @@ const appRoutes: Routes = [
   { path: 'sessions', component: SessionListComponent },
   { path: 'tracker', component: MealTrackerComponent },
   { path: 'day/:date', component: DayDetailComponent },
+  { path: 'forum/:category', component: ForumComponent},
+  { path: 'forum', component: ForumListComponent},
   //keep this one at the bottom
   { path: '**', redirectTo: '' }
 ];
@@ -60,6 +64,8 @@ const appRoutes: Routes = [
     LoginComponent,
     DayViewComponent,
     DayDetailComponent,
+    ForumComponent,
+    ForumListComponent,
   ],
   imports: [
     BrowserModule,

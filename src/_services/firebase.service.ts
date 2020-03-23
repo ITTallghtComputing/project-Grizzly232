@@ -124,6 +124,12 @@ export class FirebaseService {
     })
   }
 
+  getPosts(category) {
+    return this.db.firestore.collection('posts').where('category', '==', category).get().then(inner => {
+      return inner.docs.map(doc => doc.data());
+    })
+}
+
   updateSession(key, value) {
     const size$ = new Subject<string>();
     const queryObservable = size$.pipe(

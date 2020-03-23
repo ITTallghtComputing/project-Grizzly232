@@ -5,8 +5,6 @@ import { Observable } from 'rxjs';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { AgGridAngular } from 'ag-grid-angular';
-import { GridOptions } from 'ag-grid-community';
 
 @Component({
   selector: 'app-day-detail',
