@@ -14,7 +14,6 @@ export class ForumComponent implements OnInit {
 
   posts: any
   currentCategory: Observable<string>;
-  showCategories: boolean = true;
 
   constructor(public db: FirebaseService, public route: ActivatedRoute) { }
 
@@ -27,7 +26,6 @@ export class ForumComponent implements OnInit {
 
     this.currentCategory.subscribe(category => {
       this.posts = this.db.getPosts(category);
-      this.showCategories = false;
     })
   }
 }

@@ -128,7 +128,20 @@ export class FirebaseService {
     return this.db.firestore.collection('posts').where('category', '==', category).get().then(inner => {
       return inner.docs.map(doc => doc.data());
     })
-}
+  }
+
+  getPostById(postId) {
+    return this.db.firestore.collection('posts').where('id', '==', postId).get().then(inner => {
+      return inner.docs.map(doc => doc.data());
+    })
+  }
+
+  getComments(postId) {
+    return this.db.collection('posts', ref => ref.where('id', '==', postId)).snapshotChanges().pipe(switchMap(docRef => {
+      return this.db.collection('posts').doc(docRef[0].payload.doc.id).collection('comments').valueChanges();
+    })
+    )
+  }
 
   updateSession(key, value) {
     const size$ = new Subject<string>();

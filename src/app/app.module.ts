@@ -34,6 +34,7 @@ import { DayDetailComponent } from './day-detail/day-detail.component'
 import { AgGridModule } from 'ag-grid-angular';
 import { ForumComponent } from './forum/forum.component';
 import { ForumListComponent } from './forum-list/forum-list.component';
+import { PostComponent } from './post/post.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -43,6 +44,7 @@ const appRoutes: Routes = [
   { path: 'day/:date', component: DayDetailComponent },
   { path: 'forum/:category', component: ForumComponent},
   { path: 'forum', component: ForumListComponent},
+  { path: 'post/:postId', component: PostComponent},
   //keep this one at the bottom
   { path: '**', redirectTo: '' }
 ];
@@ -66,6 +68,7 @@ const appRoutes: Routes = [
     DayDetailComponent,
     ForumComponent,
     ForumListComponent,
+    PostComponent,
   ],
   imports: [
     BrowserModule,
