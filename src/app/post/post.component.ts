@@ -17,7 +17,12 @@ export class PostComponent implements OnInit {
   id: Observable<number>
 
   addForm: FormGroup
-  showForm: boolean;
+  showAddForm: boolean;
+
+  editForm: FormGroup;
+  showEditForm: boolean;
+
+  showCommentEditForm: boolean;
 
   constructor(
     public db: FirebaseService,
@@ -40,6 +45,11 @@ export class PostComponent implements OnInit {
     this.addForm = this.builder.group({
       body: ''
     })
+
+    this.editForm = this.builder.group({
+      subject: '',
+      body: ''
+    })
   }
 
   debug() {
@@ -51,5 +61,21 @@ export class PostComponent implements OnInit {
     this.id.subscribe(postId => {
       this.db.addComment(values, postId);
     })
+  }
+
+  editPost() {
+    let values = this.editForm.getRawValue();
+    this.id.subscribe(postId => {
+      this.db.updatePost(values, postId);
+    })
+  }
+
+  editComment(timestamp) {
+    let values = this.addForm.getRawValue();
+    values["timestamp"] = timestamp;
+    console.log(values);
+    // this.id.subscribe(postId => {
+    //   this.db.updateComment(values, postId);
+    // })
   }
 }

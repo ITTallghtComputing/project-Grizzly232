@@ -11,11 +11,13 @@
         </div>
         <div class="card-footer">
             <button class="btn btn-primary">Reply</button>
+            <button class="btn btn-success" (click)="showEditForm = true">Edit</button>
+            <button class="btn btn-danger">Delete</button>
         </div>
     </div>
-    <button class="btn btn-primary" (click)="showForm = true">Add a comment</button>
-    <div *ngIf="showForm">
-        <h5>Write your new post</h5>
+    <button class="btn btn-primary" (click)="showAddForm = true">Add a comment</button>
+    <div *ngIf="showAddForm">
+        <h5>Write your new comment</h5>
         <form [formGroup]="addForm" (ngSubmit)="addNewComment()">
             <div class="row">
                 <div class="col-sm-12 form-group">
@@ -34,7 +36,31 @@
             </div>
         </form>
     </div>
-    <div *ngFor="let comment of comments | async">
+    <div *ngIf="showEditForm">
+        <h5>Edit your post</h5>
+        <form [formGroup]="editForm" (ngSubmit)="editPost()">
+            <div class="row">
+                <div class="col-sm-12 form-group">
+                    <label>Subject</label>
+                    <textarea id="subject" class="form-control" type="text" formControlName="subject"></textarea>
+                </div>
+                <div class="col-sm-12 form-group">
+                    <label>Body</label>
+                    <textarea id="body" class="form-control" type="text" formControlName="body"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 form-group">
+                    <button type="button" style="width: 100%" type="submit" class="btn btn-primary">Post</button>
+                </div>
+                <div class="col-sm-6 form-group">
+                    <button type="button" style="width: 100%" class="btn btn-secondary"
+                        data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div *ngFor="let comment of comments | async; let i = index">
         <div class="card">
             <div class="card-header">
                 <label>{{ comment.timestamp.toDate() }}</label>
@@ -44,6 +70,30 @@
                 {{ comment.body }}
                 <!-- <span class="metaText">Last edited: {{ p.lastEdit.toDate() }}</span> -->
             </div>
+            <div class="card-footer">
+                <button class="btn btn-success" (click)="showCommentEditForm = true">Edit</button>
+                <button class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+        <div *ngIf="showCommentEditForm">
+            <h5>Edit your comment</h5>
+            <form [formGroup]="addForm" (ngSubmit)="editComment(comment.timestamp)">
+                <div class="row">
+                    <div class="col-sm-12 form-group">
+                        <label>Body</label>
+                        <textarea id="body" class="form-control" type="text" formControlName="body"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        <button type="button" style="width: 100%" type="submit" class="btn btn-primary">Post</button>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        <button type="button" style="width: 100%" class="btn btn-secondary"
+                            data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>

@@ -146,22 +146,33 @@ export class FirebaseService {
     })
   }
 
+  updatePost(values, postId) {
+    values["lastEdit"] = firestore.Timestamp.fromDate(new Date());
+    return this.db.collection('posts', ref => ref.where('id', '==', postId)).get().subscribe(docRef => {
+      return docRef.docs[0].ref.update(values);
+    })
+  }
+
   getComments(postId) {
     return this.db.collection('posts', ref => ref.where('id', '==', postId)).snapshotChanges().pipe(switchMap(docRef => {
       return this.db.collection('posts').doc(docRef[0].payload.doc.id).collection('comments').valueChanges();
-    })
-    )
+    }))
   }
 
-  addComment(values, id) {
-    console.log(id);
-    return this.db.collection('posts', ref => ref.where('id', '==', id)).snapshotChanges().subscribe(docRef => {
+  addComment(values, postId) {
+    return this.db.collection('posts', ref => ref.where('id', '==', postId)).snapshotChanges().subscribe(docRef => {
       return this.db.collection('posts').doc(docRef[0].payload.doc.id).collection('comments').add({
         body: values.body,
         timestamp: firestore.Timestamp.fromDate(new Date())
       });
     })
   }
+
+  // updateComment(values, postId) {
+  //   return this.db.collection('posts', ref => ref.where('id', '==', postId)).snapshotChanges().subscribe(docRef => {
+  //     return this.db.collection('posts').doc(docRef[0].payload.doc.id).collection('comments'). 
+  //   })
+  // }
 
   updateSession(key, value) {
     const size$ = new Subject<string>();

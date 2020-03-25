@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from './../../_services/firebase.service';
 import { Observable } from 'rxjs';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { map } from 'rxjs/operators';
-import { Query } from '@angular/fire/firestore';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
@@ -22,7 +21,8 @@ export class ForumComponent implements OnInit {
   constructor(
     public db: FirebaseService,
     public route: ActivatedRoute,
-    public builder: FormBuilder
+    public builder: FormBuilder,
+    public router: Router
   ) { }
 
   ngOnInit() {
@@ -46,8 +46,9 @@ export class ForumComponent implements OnInit {
     let values = this.addForm.getRawValue();
     this.currentCategory.subscribe(category => {
       values["category"] = category;
-      values["id"] = 4;
+      values["id"] = 5;
       this.db.addNewPost(values);
+      this.router.navigate([`./../../post/${values["id"]}`]);
     })
   }
 }
