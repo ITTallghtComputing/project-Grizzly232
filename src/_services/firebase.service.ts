@@ -168,11 +168,15 @@ export class FirebaseService {
     })
   }
 
-  // updateComment(values, postId) {
-  //   return this.db.collection('posts', ref => ref.where('id', '==', postId)).snapshotChanges().subscribe(docRef => {
-  //     return this.db.collection('posts').doc(docRef[0].payload.doc.id).collection('comments'). 
-  //   })
-  // }
+  updateComment(values, postId) {
+    values["lastEdit"] = firestore.Timestamp.fromDate(new Date());
+    return this.db.collection('posts', ref => ref.where('id', '==', postId)).snapshotChanges().subscribe(docRef => {
+      return this.db.collection('posts').doc(docRef[0].payload.doc.id).collection('comments', 
+      ref => ref.where('timestamp', '==', values["timestamp"])).get().subscribe(docRef => {
+        docRef.docs[0].ref.update(values);
+      })
+    })
+  }
 
   updateSession(key, value) {
     const size$ = new Subject<string>();

@@ -23,6 +23,7 @@ export class PostComponent implements OnInit {
   showEditForm: boolean;
 
   showCommentEditForm: boolean;
+  formIndex: number;
 
   constructor(
     public db: FirebaseService,
@@ -73,9 +74,8 @@ export class PostComponent implements OnInit {
   editComment(timestamp) {
     let values = this.addForm.getRawValue();
     values["timestamp"] = timestamp;
-    console.log(values);
-    // this.id.subscribe(postId => {
-    //   this.db.updateComment(values, postId);
-    // })
+    this.id.subscribe(postId => {
+      this.db.updateComment(values, postId);
+    })
   }
 }
