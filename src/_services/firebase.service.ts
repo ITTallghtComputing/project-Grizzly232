@@ -136,11 +136,31 @@ export class FirebaseService {
     })
   }
 
+  addNewPost(values) {
+    return this.db.collection('posts').add({
+      body: values.body,
+      category: values.category,
+      id: values.id,
+      subject: values.subject,
+      timestamp: firestore.Timestamp.fromDate(new Date())
+    })
+  }
+
   getComments(postId) {
     return this.db.collection('posts', ref => ref.where('id', '==', postId)).snapshotChanges().pipe(switchMap(docRef => {
       return this.db.collection('posts').doc(docRef[0].payload.doc.id).collection('comments').valueChanges();
     })
     )
+  }
+
+  addComment(values, id) {
+    console.log(id);
+    return this.db.collection('posts', ref => ref.where('id', '==', id)).snapshotChanges().subscribe(docRef => {
+      return this.db.collection('posts').doc(docRef[0].payload.doc.id).collection('comments').add({
+        body: values.body,
+        timestamp: firestore.Timestamp.fromDate(new Date())
+      });
+    })
   }
 
   updateSession(key, value) {

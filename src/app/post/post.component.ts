@@ -3,6 +3,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FirebaseService } from '../../_services/firebase.service';
+import { FormGroup, FormBuilder } from '@angular/forms'
 
 @Component({
   selector: 'app-post',
@@ -15,7 +16,14 @@ export class PostComponent implements OnInit {
   comments: any;
   id: Observable<number>
 
-  constructor(public db: FirebaseService, public route: ActivatedRoute) { }
+  addForm: FormGroup
+  showForm: boolean;
+
+  constructor(
+    public db: FirebaseService,
+    public route: ActivatedRoute,
+    public builder: FormBuilder
+  ) { }
 
   ngOnInit() {
     this.id = this.route.paramMap.pipe(
@@ -28,9 +36,20 @@ export class PostComponent implements OnInit {
       this.post = this.db.getPostById(postId);
       this.comments = this.db.getComments(postId);
     })
+
+    this.addForm = this.builder.group({
+      body: ''
+    })
   }
 
   debug() {
     console.log(this.comments);
+  }
+
+  addNewComment() {
+    let values = this.addForm.getRawValue();
+    this.id.subscribe(postId => {
+      this.db.addComment(values, postId);
+    })
   }
 }

@@ -1,24 +1,3 @@
-<h2>Meal Tracker</h2>
+<h2>Fitness Tracker</h2>
 <button class="btn btn-success" (click)="addNewDay()">Add New Day</button>
 <app-calendar></app-calendar>
-<!-- <ul style="list-style-type: none;">
-    <li class="text" *ngFor="let day of days | async">
-        <div class="card">
-            <div class="card-header">
-                <h5 style="float: left">Day {{ day.id }}</h5>
-                <button class="btn btn-primary" style="float: right;" (click)="showForm=true">Add</button>
-            </div>
-            <div class="card-body">
-                <div *ngFor="let meal of day.meals">
-                    <p style="float: left;"><strong>Name: </strong> {{ meal.name }}</p>
-                    <p style="float: right;"><strong>Calories: </strong> {{ meal.calories }}</p>
-                    <br><br>
-                </div>
-            </div>
-            <div *ngIf="showForm">
-                <app-meal-form [dayId]=day.id (cancelled)="closeMealForm($event)"></app-meal-form>
-            </div>
-        </div>
-        <router-outlet></router-outlet>
-    </li>
-</ul> -->

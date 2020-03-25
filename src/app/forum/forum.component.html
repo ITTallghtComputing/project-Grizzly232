@@ -3,14 +3,44 @@
         <h3>{{ currentCategory | async}}</h3>
     </div>
     <div class="card-body">
+        <button class="btn btn-primary" (click)="showForm = true">New Post</button>
+        <div *ngIf="showForm">
+            <h5>Write your new post</h5>
+            <form [formGroup]="addForm" (ngSubmit)="addNewPost()">
+                <div class="row">
+                    <div class="col-sm-12 form-group">
+                    <label>Subject</label>
+                    <input id="subject" class="form-control" type="text" formControlName="subject">
+                </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 form-group">
+                        <label>Body</label>
+                        <input id="body" class="form-control" type="text" formControlName="body">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        <button type="button" style="width: 100%" type="submit" class="btn btn-primary">Post</button>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        <button type="button" style="width: 100%" class="btn btn-secondary"
+                            data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
         <div *ngFor="let post of posts | async; let i = index" class="card">
             <div class="card-header">
-                <a href="" class="post-header"><h5 class="subject">{{ post.subject }}</h5></a>
-                <button class="btn btn-primary rightButton" type="button" data-toggle="collapse" [attr.data-target]="'#detail'+i">Preview</button>
+                <a href="" class="post-header">
+                    <h5 class="subject">{{ post.subject }}</h5>
+                </a>
+                <button class="btn btn-primary rightButton" type="button" data-toggle="collapse"
+                    [attr.data-target]="'#detail'+i">Preview</button>
             </div>
             <div class="collapse" id="{{ 'detail'+i }}">
                 <div class="card-body">
-                    {{ post.text }}
+                    {{ post.body }}
                 </div>
             </div>
         </div>
