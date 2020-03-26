@@ -153,6 +153,13 @@ export class FirebaseService {
     })
   }
 
+  deletePost(postId) {
+    return this.db.collection('posts', ref => ref.where('id', '==', postId)).get().subscribe(docRef => {
+      console.log(docRef)
+      return docRef.docs[0].ref.delete();
+    })
+  }
+
   getComments(postId) {
     return this.db.collection('posts', ref => ref.where('id', '==', postId)).snapshotChanges().pipe(switchMap(docRef => {
       return this.db.collection('posts').doc(docRef[0].payload.doc.id).collection('comments').valueChanges();
@@ -174,6 +181,15 @@ export class FirebaseService {
       return this.db.collection('posts').doc(docRef[0].payload.doc.id).collection('comments', 
       ref => ref.where('timestamp', '==', values["timestamp"])).get().subscribe(docRef => {
         docRef.docs[0].ref.update(values);
+      })
+    })
+  }
+
+  deleteComment(timestamp, postId) {
+    return this.db.collection('posts', ref => ref.where('id', '==', postId)).snapshotChanges().subscribe(docRef => {
+      return this.db.collection('posts').doc(docRef[0].payload.doc.id).collection('comments', 
+      ref => ref.where('timestamp', '==', timestamp)).get().subscribe(docRef => {
+        docRef.docs[0].ref.delete();
       })
     })
   }

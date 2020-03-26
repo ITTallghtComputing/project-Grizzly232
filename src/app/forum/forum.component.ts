@@ -46,7 +46,7 @@ export class ForumComponent implements OnInit {
     let values = this.addForm.getRawValue();
     this.currentCategory.subscribe(category => {
       values["category"] = category;
-      values["id"] = 5;
+      values["id"] = Math.floor(Math.random() * 100000000);
       this.db.addNewPost(values);
       this.router.navigate([`./../../post/${values["id"]}`]);
     })

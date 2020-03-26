@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FirebaseService } from '../../_services/firebase.service';
 import { FormGroup, FormBuilder } from '@angular/forms'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-post',
@@ -28,7 +29,8 @@ export class PostComponent implements OnInit {
   constructor(
     public db: FirebaseService,
     public route: ActivatedRoute,
-    public builder: FormBuilder
+    public builder: FormBuilder,
+    public router: Router
   ) { }
 
   ngOnInit() {
@@ -77,5 +79,22 @@ export class PostComponent implements OnInit {
     this.id.subscribe(postId => {
       this.db.updateComment(values, postId);
     })
+  }
+
+  deletePost() {
+    if(window.confirm('Are you sure you want to delete this post?')) {
+      this.id.subscribe(postId => {
+        this.db.deletePost(postId);
+        this.router.navigate(['./../../forum']);
+      })
+    }
+  }
+
+  deleteComment(timestamp) {
+    if(window.confirm('Are you sure you want to delete this comment?')) {
+      this.id.subscribe(postId => {
+        this.db.deleteComment(timestamp, postId);
+      })
+    }
   }
 }

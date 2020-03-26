@@ -7,12 +7,14 @@
         </div>
         <div class="card-body">
             <p>{{ p.body }}</p>
-            <!-- <span class="metaText">Last edited: {{ p.lastEdit.toDate() }}</span> -->
+            <div *ngIf="p.lastEdit">
+                <span class="metaText">Last edited: {{ p.lastEdit.toDate() }}</span>
+            </div>
         </div>
         <div class="card-footer">
             <button class="btn btn-primary">Reply</button>
             <button class="btn btn-success" (click)="showEditForm = true">Edit</button>
-            <button class="btn btn-danger">Delete</button>
+            <button class="btn btn-danger" (click)="deletePost()">Delete</button>
         </div>
     </div>
     <button class="btn btn-primary" (click)="showAddForm = true">Add a comment</button>
@@ -42,11 +44,11 @@
             <div class="row">
                 <div class="col-sm-12 form-group">
                     <label>Subject</label>
-                    <textarea id="subject" class="form-control" type="text" formControlName="subject"></textarea>
+                    <input [value]=p.subject id="subject" class="form-control" type="text" formControlName="subject">
                 </div>
                 <div class="col-sm-12 form-group">
                     <label>Body</label>
-                    <textarea id="body" class="form-control" type="text" formControlName="body"></textarea>
+                    <textarea [value]=p.body id="body" class="form-control" type="text" formControlName="body"></textarea>
                 </div>
             </div>
             <div class="row">
@@ -69,12 +71,12 @@
             <div class="card-body">
                 {{ comment.body }}
                 <div *ngIf="comment.lastEdit">
-                    <span class="metaText" >Last edited: {{ comment.lastEdit.toDate() }}</span>
+                    <span class="metaText">Last edited: {{ comment.lastEdit.toDate() }}</span>
                 </div>
             </div>
             <div class="card-footer">
                 <button class="btn btn-success" (click)="formIndex = i">Edit</button>
-                <button class="btn btn-danger">Delete</button>
+                <button class="btn btn-danger" (click)="deleteComment(comment.timestamp)">Delete</button>
             </div>
         </div>
         <div *ngIf="i == formIndex">
@@ -83,7 +85,7 @@
                 <div class="row">
                     <div class="col-sm-12 form-group">
                         <label>Body</label>
-                        <textarea id="body" class="form-control" type="text" formControlName="body"></textarea>
+                        <textarea [value]=comment.body id="body" class="form-control" type="text" formControlName="body"></textarea>
                     </div>
                 </div>
                 <div class="row">
