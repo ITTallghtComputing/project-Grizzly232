@@ -11,20 +11,21 @@ admin.initializeApp();
 // var db = firebase.firestore;
 
 const dayRef = admin.firestore().collection('days')
+const postRef = admin.firestore().collection('posts')
 
 //update methods
 exports.sumSessions = functions.firestore
-.document('days/{day}/session/{sessionId}')
-.onUpdate((snapshot, context) => {
-    let dayRefDoc = dayRef.doc(context.params.day)
-    return dayRefDoc.get().then(inner => {
-        let day = inner.data();
-        return dayRefDoc.update({
-            caloriesBurned: (parseInt(day.caloriesBurned) - parseInt(snapshot.before.data().caloriesBurned)) + parseInt(snapshot.after.data().caloriesBurned),
-            sessionTime: (parseInt(day.sessionTime) - parseInt(snapshot.before.data().duration)) + parseInt(snapshot.after.data().duration)
+    .document('days/{day}/session/{sessionId}')
+    .onUpdate((snapshot, context) => {
+        let dayRefDoc = dayRef.doc(context.params.day)
+        return dayRefDoc.get().then(inner => {
+            let day = inner.data();
+            return dayRefDoc.update({
+                caloriesBurned: (parseInt(day.caloriesBurned) - parseInt(snapshot.before.data().caloriesBurned)) + parseInt(snapshot.after.data().caloriesBurned),
+                sessionTime: (parseInt(day.sessionTime) - parseInt(snapshot.before.data().duration)) + parseInt(snapshot.after.data().duration)
+            })
         })
     })
-})
 
 exports.sumMeals = functions.firestore
     .document('days/{day}/meals/{mealId}')
@@ -88,22 +89,24 @@ exports.deleteMeals = functions.firestore
         })
     })
 
-// exports.recalculateSessions = functions.firestore
-//     .document('days/{day}/session/{sessionId}')
-//     .onWrite((snapshot, context) => {
-//         let dayRefDoc = dayRef.doc(context.params.day)
-//         let sessionRefDoc = dayRefDoc.collection('session')
-//         dayRefDoc.get().then(outer => {
-//             let temp = { caloriesBurned: 0, activities: 0, sessionTime: 0 }
-//             sessionRefDoc.get().then(inner => {
-//                 let data = inner.data();
-//                 temp.caloriesBurned += data.caloriesBurned;
-//                 temp.sessionTime += data.duration;
-//                 temp.activities++;
-//                 resolve(temp);
-//             }).then(after => {
-//                 console.log(temp);
-//                 return dayRefDoc.update(temp);
-//             })
-//         })
-//     })
+exports.incrementReplies = functions.firestore
+    .document('posts/{postId}/comments/{commentId}')
+    .onCreate((snapshot, context) => {
+        let postRefDoc = postRef.doc(context.params.postId)
+        return postRefDoc.get().then(inner => {
+            return postRefDoc.update({
+                replies: inner.data().replies + 1
+            })
+        })
+    })
+
+exports.decrementReplies = functions.firestore
+    .document('posts/{postId}/comments/{commentId}')
+    .onDelete((snapshot, context) => {
+        let postRefDoc = postRef.doc(context.params.postId)
+        return postRefDoc.get().then(inner => {
+            return postRefDoc.update({
+                replies: inner.data().replies - 1
+            })
+        })
+    })

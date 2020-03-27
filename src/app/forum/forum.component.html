@@ -9,9 +9,9 @@
             <form [formGroup]="addForm" (ngSubmit)="addNewPost()">
                 <div class="row">
                     <div class="col-sm-12 form-group">
-                    <label>Subject</label>
-                    <input id="subject" class="form-control" type="text" formControlName="subject">
-                </div>
+                        <label>Subject</label>
+                        <input id="subject" class="form-control" type="text" formControlName="subject">
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-12 form-group">
@@ -34,9 +34,13 @@
             <div class="card-header">
                 <a href="./../../post/{{ post.id }}" class="post-header">
                     <h5 class="subject">{{ post.subject }}</h5>
+                    <p>{{ post.timestamp.toDate() }}</p>
                 </a>
-                <button class="btn btn-primary rightButton" type="button" data-toggle="collapse"
+                <button class="btn btn-primary right" type="button" data-toggle="collapse"
                     [attr.data-target]="'#detail'+i">Preview</button>
+                <small class="right">&lt;Name of User&gt;</small>
+                <small class="right" *ngIf="post.replies; else elseBlock">Replies: {{ post.replies }}</small>
+                <ng-template #elseBlock><small class="right">No replies yet</small></ng-template>
             </div>
             <div class="collapse" id="{{ 'detail'+i }}">
                 <div class="card-body">

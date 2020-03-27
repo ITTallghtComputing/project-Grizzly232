@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { Subject } from 'rxjs';
+import { Subject, pipe } from 'rxjs';
 import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, first } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 import { firestore } from 'firebase';
 
@@ -125,7 +125,7 @@ export class FirebaseService {
   }
 
   getPosts(category) {
-    return this.db.firestore.collection('posts').where('category', '==', category).get().then(inner => {
+    return this.db.firestore.collection('posts').where('category', '==', category).orderBy("timestamp", "desc").get().then(inner => {
       return inner.docs.map(doc => doc.data());
     })
   }
@@ -142,7 +142,8 @@ export class FirebaseService {
       category: values.category,
       id: values.id,
       subject: values.subject,
-      timestamp: firestore.Timestamp.fromDate(new Date())
+      timestamp: firestore.Timestamp.fromDate(new Date()),
+      replies: 0
     })
   }
 
@@ -161,13 +162,15 @@ export class FirebaseService {
   }
 
   getComments(postId) {
-    return this.db.collection('posts', ref => ref.where('id', '==', postId)).snapshotChanges().pipe(switchMap(docRef => {
-      return this.db.collection('posts').doc(docRef[0].payload.doc.id).collection('comments').valueChanges();
-    }))
+    return this.db.firestore.collection('posts').where('id', '==', postId).get().then(docRef => {
+      return docRef.docs[0].ref.collection('comments').orderBy("timestamp", "asc").get().then(docRef => {
+        return docRef.docs.map(doc => doc.data())
+      })
+    })
   }
 
   addComment(values, postId) {
-    return this.db.collection('posts', ref => ref.where('id', '==', postId)).snapshotChanges().subscribe(docRef => {
+    return this.db.collection('posts', ref => ref.where('id', '==', postId)).snapshotChanges().pipe(first()).subscribe(docRef => {
       return this.db.collection('posts').doc(docRef[0].payload.doc.id).collection('comments').add({
         body: values.body,
         timestamp: firestore.Timestamp.fromDate(new Date())
@@ -178,19 +181,19 @@ export class FirebaseService {
   updateComment(values, postId) {
     values["lastEdit"] = firestore.Timestamp.fromDate(new Date());
     return this.db.collection('posts', ref => ref.where('id', '==', postId)).snapshotChanges().subscribe(docRef => {
-      return this.db.collection('posts').doc(docRef[0].payload.doc.id).collection('comments', 
-      ref => ref.where('timestamp', '==', values["timestamp"])).get().subscribe(docRef => {
-        docRef.docs[0].ref.update(values);
-      })
+      return this.db.collection('posts').doc(docRef[0].payload.doc.id).collection('comments',
+        ref => ref.where('timestamp', '==', values["timestamp"])).get().subscribe(docRef => {
+          docRef.docs[0].ref.update(values);
+        })
     })
   }
 
   deleteComment(timestamp, postId) {
-    return this.db.collection('posts', ref => ref.where('id', '==', postId)).snapshotChanges().subscribe(docRef => {
-      return this.db.collection('posts').doc(docRef[0].payload.doc.id).collection('comments', 
-      ref => ref.where('timestamp', '==', timestamp)).get().subscribe(docRef => {
-        docRef.docs[0].ref.delete();
-      })
+    return this.db.collection('posts', ref => ref.where('id', '==', postId)).snapshotChanges().pipe(first()).subscribe(docRef => {
+      return this.db.collection('posts').doc(docRef[0].payload.doc.id).collection('comments',
+        ref => ref.where('timestamp', '==', timestamp)).get().subscribe(docRef => {
+          docRef.docs[0].ref.delete();
+        })
     })
   }
 

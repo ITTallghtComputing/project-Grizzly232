@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, switchMap, take, first } from 'rxjs/operators';
 import { FirebaseService } from '../../_services/firebase.service';
 import { FormGroup, FormBuilder } from '@angular/forms'
 import { Router } from '@angular/router';
+
+declare var $: any;
 
 @Component({
   selector: 'app-post',
@@ -61,8 +63,12 @@ export class PostComponent implements OnInit {
 
   addNewComment() {
     let values = this.addForm.getRawValue();
-    this.id.subscribe(postId => {
+    this.id.pipe(first()).subscribe(postId => {
       this.db.addComment(values, postId);
+      $('#commentAddedToast').toast('show')
+      setTimeout(function() {
+        location.reload();
+      }, 3000)
     })
   }
 
@@ -78,22 +84,29 @@ export class PostComponent implements OnInit {
     values["timestamp"] = timestamp;
     this.id.subscribe(postId => {
       this.db.updateComment(values, postId);
+      $('#commentEditedToast').toast('show')
+      setTimeout(function() {
+        location.reload();
+      }, 3000)
     })
   }
 
   deletePost() {
-    if(window.confirm('Are you sure you want to delete this post?')) {
+    if (window.confirm('Are you sure you want to delete this post?')) {
       this.id.subscribe(postId => {
         this.db.deletePost(postId);
-        this.router.navigate(['./../../forum']);
       })
     }
   }
 
   deleteComment(timestamp) {
-    if(window.confirm('Are you sure you want to delete this comment?')) {
+    if (window.confirm('Are you sure you want to delete this comment?')) {
       this.id.subscribe(postId => {
         this.db.deleteComment(timestamp, postId);
+        $('#commentDeletedToast').toast('show')
+        setTimeout(function() {
+          location.reload();
+        }, 3000)
       })
     }
   }

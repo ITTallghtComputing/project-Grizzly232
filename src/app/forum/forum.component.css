@@ -8,9 +8,10 @@
     text-decoration-line: none;
 }
 
-.rightButton {
+.right {
     text-align: right;
     float: right;
+    margin-left: 1em;
 }
 
 .subject {

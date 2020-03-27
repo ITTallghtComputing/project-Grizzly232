@@ -42,9 +42,9 @@ const appRoutes: Routes = [
   { path: 'sessions', component: SessionListComponent },
   { path: 'tracker', component: MealTrackerComponent },
   { path: 'day/:date', component: DayDetailComponent },
-  { path: 'forum/:category', component: ForumComponent},
-  { path: 'forum', component: ForumListComponent},
-  { path: 'post/:postId', component: PostComponent},
+  { path: 'forum/:category', component: ForumComponent },
+  { path: 'forum', component: ForumListComponent },
+  { path: 'post/:postId', component: PostComponent },
   //keep this one at the bottom
   { path: '**', redirectTo: '' }
 ];
@@ -74,7 +74,10 @@ const appRoutes: Routes = [
     BrowserModule,
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: true }
+      {
+        enableTracing: true,
+        onSameUrlNavigation: 'reload'
+      }
     ),
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase, 'SwimApp'),
