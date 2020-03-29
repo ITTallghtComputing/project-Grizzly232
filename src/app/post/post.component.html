@@ -13,7 +13,8 @@
         </div>
         <div class="card-footer">
             <button class="btn btn-primary">Reply</button>
-            <button class="btn btn-success" (click)="showEditForm = true">Edit</button>
+            <button class="btn btn-success"
+                (click)="showEditForm = true; setSubject(p.subject); setBody(p.body)">Edit</button>
             <button class="btn btn-danger" (click)="deletePost()">Delete</button>
         </div>
     </div>
@@ -32,7 +33,7 @@
                     <button type="button" style="width: 100%" type="submit" class="btn btn-primary">Post</button>
                 </div>
                 <div class="col-sm-6 form-group">
-                    <button type="button" style="width: 100%" class="btn btn-secondary"
+                    <button (click)="showAddForm = false" type="button" style="width: 100%" class="btn btn-secondary"
                         data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -48,7 +49,8 @@
                 </div>
                 <div class="col-sm-12 form-group">
                     <label>Body</label>
-                    <textarea [value]=p.body id="body" class="form-control" type="text" formControlName="body"></textarea>
+                    <textarea [value]=p.body id="body" class="form-control" type="text"
+                        formControlName="body"></textarea>
                 </div>
             </div>
             <div class="row">
@@ -56,7 +58,7 @@
                     <button type="button" style="width: 100%" type="submit" class="btn btn-primary">Post</button>
                 </div>
                 <div class="col-sm-6 form-group">
-                    <button type="button" style="width: 100%" class="btn btn-secondary"
+                    <button (click)="showEditForm = false" type="button" style="width: 100%" class="btn btn-secondary"
                         data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -75,7 +77,7 @@
                 </div>
             </div>
             <div class="card-footer">
-                <button class="btn btn-success" (click)="formIndex = i">Edit</button>
+                <button class="btn btn-success" (click)="formIndex = i; setBody(comment.body)">Edit</button>
                 <button class="btn btn-danger" (click)="deleteComment(comment.timestamp)">Delete</button>
             </div>
         </div>
@@ -85,7 +87,8 @@
                 <div class="row">
                     <div class="col-sm-12 form-group">
                         <label>Body</label>
-                        <textarea [value]=comment.body id="body" class="form-control" type="text" formControlName="body"></textarea>
+                        <textarea (click)="setBody(comment.body)" [value]=comment.body id="body" class="form-control"
+                            type="text" formControlName="body"></textarea>
                     </div>
                 </div>
                 <div class="row">
@@ -101,7 +104,8 @@
         </div>
     </div>
 </div>
-<div id="commentAddedToast" #commentAddedToast data-autohide="false" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+<div id="commentAddedToast" #commentAddedToast data-autohide="false" class="toast" role="alert" aria-live="assertive"
+    aria-atomic="true">
     <div class="toast-header">
         <strong class="mr-auto">Success!</strong>
     </div>
@@ -109,7 +113,8 @@
         Your comment has been added.
     </div>
 </div>
-<div id="commentEditedToast" #commentEditedToast data-autohide="false" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+<div id="commentEditedToast" #commentEditedToast data-autohide="false" class="toast" role="alert" aria-live="assertive"
+    aria-atomic="true">
     <div class="toast-header">
         <strong class="mr-auto">Success!</strong>
     </div>
@@ -117,7 +122,17 @@
         Your comment has been edited.
     </div>
 </div>
-<div id="commentDeletedToast" #commentDeletedToast data-autohide="false" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+<div id="commentDeletedToast" #commentDeletedToast data-autohide="false" class="toast" role="alert"
+    aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+        <strong class="mr-auto">Success!</strong>
+    </div>
+    <div class="toast-body">
+        Your comment has been deleted.
+    </div>
+</div>
+<div id="postEditedToast" #postEditedToast data-autohide="false" class="toast" role="alert"
+    aria-live="assertive" aria-atomic="true">
     <div class="toast-header">
         <strong class="mr-auto">Success!</strong>
     </div>

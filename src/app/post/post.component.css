@@ -12,3 +12,7 @@
     top: 100px;
     left: 100px;
 }
+
+.toast-header {
+    background-color: rgb(140, 236, 140);
+}

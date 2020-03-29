@@ -1,0 +1,8 @@
+.linkText {
+    color: black;
+}
+
+.linkText:hover {
+    color: grey;
+    text-decoration-line: none;
+}

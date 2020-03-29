@@ -68,7 +68,7 @@ export class PostComponent implements OnInit {
       $('#commentAddedToast').toast('show')
       setTimeout(function() {
         location.reload();
-      }, 3000)
+      }, 2000)
     })
   }
 
@@ -76,6 +76,10 @@ export class PostComponent implements OnInit {
     let values = this.editForm.getRawValue();
     this.id.subscribe(postId => {
       this.db.updatePost(values, postId);
+      $('#postEditedToast').toast('show')
+      setTimeout(function() {
+        location.reload();
+      }, 2000)
     })
   }
 
@@ -87,7 +91,7 @@ export class PostComponent implements OnInit {
       $('#commentEditedToast').toast('show')
       setTimeout(function() {
         location.reload();
-      }, 3000)
+      }, 2000)
     })
   }
 
@@ -95,6 +99,7 @@ export class PostComponent implements OnInit {
     if (window.confirm('Are you sure you want to delete this post?')) {
       this.id.subscribe(postId => {
         this.db.deletePost(postId);
+        this.router.navigate(['../../forum']);
       })
     }
   }
@@ -109,5 +114,14 @@ export class PostComponent implements OnInit {
         }, 3000)
       })
     }
+  }
+
+  setSubject(value) {
+    this.editForm.controls.subject.setValue(value);
+  }
+
+  setBody(value) {
+    this.addForm.controls.body.setValue(value);
+    this.editForm.controls.body.setValue(value);
   }
 }

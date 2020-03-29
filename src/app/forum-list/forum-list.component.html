@@ -3,8 +3,16 @@
         Forum
     </div>
     <div class="card-body">
-        <div *ngFor="let category of categories">
-            <a href="forum/{{category}}">{{ category }}</a>
+        <div class="card">
+            <div *ngFor="let category of categories; let i = index;">
+                <div class="card-header">
+                    <h5><a class="linkText" href="forum/{{category}}">{{ category }}</a></h5>
+                    <small *ngIf="i == 0">General topics. If you're not sure where your post belongs, put it here.</small>
+                    <small *ngIf="i == 1">A place to share, study and hopefully improve your workout routine.</small>
+                    <small *ngIf="i == 2">Share meal plans and figure out how to spice up your day.</small>
+                    <small *ngIf="i == 3">Ask for some fitness advice from others, or share your own techniques.</small>
+                </div>
+            </div>
         </div>
     </div>
 </div>
