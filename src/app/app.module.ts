@@ -36,17 +36,19 @@ import { ForumComponent } from './forum/forum.component';
 import { ForumListComponent } from './forum-list/forum-list.component';
 import { PostComponent } from './post/post.component';
 import { RegisterComponent } from './register/register.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const appRoutes: Routes = [
-  { path: '', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'sessions', component: SessionListComponent },
-  { path: 'tracker', component: MealTrackerComponent },
-  { path: 'day/:date', component: DayDetailComponent },
+  { path: 'tracker', component: MealTrackerComponent, canActivate: [AuthGuard] },
+  { path: 'day/:date', component: DayDetailComponent, canActivate: [AuthGuard] },
   { path: 'forum/:category', component: ForumComponent },
   { path: 'forum', component: ForumListComponent },
   { path: 'post/:postId', component: PostComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   //keep this one at the bottom
   { path: '**', redirectTo: '' }
 ];
@@ -72,6 +74,7 @@ const appRoutes: Routes = [
     ForumListComponent,
     PostComponent,
     RegisterComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,

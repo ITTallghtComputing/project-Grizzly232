@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FirebaseService } from './../../_services/firebase.service';
 
@@ -13,7 +14,8 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     public builder: FormBuilder, 
-    public db: FirebaseService) { 
+    public db: FirebaseService,
+    public router: Router) { 
       this.addForm = this.builder.group({
         username: '',
         password: ''
@@ -27,5 +29,8 @@ export class RegisterComponent implements OnInit {
   addNewUser() {
     let values = this.addForm.getRawValue();
     this.db.addNewUser(values);
+    setTimeout(() => {
+      this.router.navigate(['./../login']);
+    }, 1000)
   }
 }

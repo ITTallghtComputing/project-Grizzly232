@@ -1,8 +1,10 @@
 <div ng-app="swimApp" ng-controller="app.component.ts">
-  <nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="currentUser">
+  <nav class="navbar navbar-expand navbar-dark bg-dark">
     <div class="navbar-nav">
       <a class="nav-item nav-link" routerLink="/">Home</a>
-      <a class="nav-item nav-link" (click)="logout()">Logout</a>
+      <a *ngIf="currentUser; else elseBlock" class="nav-item nav-link" (click)="logout()">Logout</a>
+      <ng-template #elseBlock><a class="nav-item nav-link" href="/login">Login</a></ng-template>
+      <a *ngIf="currentUser" class="nav-item nav-link" href="/profile">{{ currentUser.username }}</a>
     </div>
   </nav>
 </div>
