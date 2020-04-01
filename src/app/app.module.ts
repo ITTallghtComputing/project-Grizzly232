@@ -35,6 +35,7 @@ import { AgGridModule } from 'ag-grid-angular';
 import { ForumComponent } from './forum/forum.component';
 import { ForumListComponent } from './forum-list/forum-list.component';
 import { PostComponent } from './post/post.component';
+import { RegisterComponent } from './register/register.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -45,6 +46,7 @@ const appRoutes: Routes = [
   { path: 'forum/:category', component: ForumComponent },
   { path: 'forum', component: ForumListComponent },
   { path: 'post/:postId', component: PostComponent },
+  { path: 'register', component: RegisterComponent },
   //keep this one at the bottom
   { path: '**', redirectTo: '' }
 ];
@@ -69,6 +71,7 @@ const appRoutes: Routes = [
     ForumComponent,
     ForumListComponent,
     PostComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,

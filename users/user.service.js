@@ -13,7 +13,7 @@ firebase.initializeApp({
 
 const db = firebase.firestore();
 
-const users = db.collection('users').get();
+
 
 module.exports = {
     authenticate,
@@ -21,7 +21,9 @@ module.exports = {
 };
 
 function authenticate({ username, password }) {
-    return users.then(async (querySnapshot) => {
+    const users = db.collection('users').where('username', '==', username);
+    return users.get().then(async (querySnapshot) => {
+        console.log(querySnapshot.docs);
         const userDoc = querySnapshot.docs.find(doc => {
             return doc.data().username.toUpperCase() === username.toUpperCase();
         })

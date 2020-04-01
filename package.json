@@ -28,6 +28,7 @@
     "angular-calendar": "^0.28.2",
     "angularfire": "^2.3.0",
     "bcrypt": "^4.0.1",
+    "bcryptjs": "^2.4.3",
     "bootstrap": "^4.4.1",
     "cors": "^2.8.5",
     "date-fns": "^2.8.0",

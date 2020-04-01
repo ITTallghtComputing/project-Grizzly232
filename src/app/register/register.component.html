@@ -1,0 +1,12 @@
+<div class="card">
+    <div class="card-header">
+        <h5>Register</h5>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="addForm" (ngSubmit)="addNewUser()">
+            <input type="text" formControlName="username" placeholder="Username">
+            <input type="password" formControlName="password" placeholder="Password">
+            <button class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>

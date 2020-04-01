@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { switchMap, first } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 import { firestore } from 'firebase';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable({
   providedIn: 'root'
@@ -43,8 +44,9 @@ export class FirebaseService {
     return firestore.Timestamp.fromMillis(date);
   }
 
-  count(collection) {
-
+  addNewUser(values) {
+    values["password"] = bcrypt.hashSync(values["password"], 0);
+    return this.db.collection('users').add(values);
   }
 
   addDay(date: firestore.Timestamp) {
