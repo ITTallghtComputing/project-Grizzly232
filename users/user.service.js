@@ -1,37 +1,49 @@
 const config = require('config.json');
 const jwt = require('jsonwebtoken');
+const firebase = require('firebase');
+const rxjs = require('rxjs');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-const users = [
-    { id: 1, username: 'test', password: 'test', firstName: 'Test', lastName: 'User' },
-    { id: 2, username: 'user', password: 'password', firstName: 'Spurdo', lastName: 'Komurdo' }];
+firebase.initializeApp({
+    apiKey: "AIzaSyAvgAdnejzqDmSwz2USui_-Gfu4jSHh-v4",
+    authDomain: "swimapp-d4f4a.firebaseapp.com",
+    projectId: "swimapp-d4f4a"
+});
+
+const db = firebase.firestore();
+
+const users = db.collection('users').get();
 
 module.exports = {
     authenticate,
     getAll
 };
 
-async function authenticate({ username, password }) {
-    //todo:
-    // pull list of users from Firebase. gonna have to subscribe to these
-    // get 'currentUser' global variable working (very useful later on)
-
-    const user = users.find(u => u.username === username);
-    if (user) {
-        return bcrypt.hash(user.password, saltRounds).then(function (hash) {
-            return bcrypt.compare(password, hash).then(function (result) {
-                if (result) {
-                    const token = jwt.sign({ sub: user.id }, config.secret);
-                    const { password, ...userWithoutPassword } = user;
-                    return {
-                        ...userWithoutPassword,
-                        token
-                    };
-                }
-            })
+function authenticate({ username, password }) {
+    return users.then(async (querySnapshot) => {
+        const userDoc = querySnapshot.docs.find(doc => {
+            return doc.data().username.toUpperCase() === username.toUpperCase();
         })
-    }
+
+        if (userDoc) {
+            let user = userDoc.data();
+            const pwdCompareResult = await bcrypt.compare(password, user.password);
+
+            console.log(password);
+            console.log(user.password);
+            console.log(pwdCompareResult);
+
+            if (pwdCompareResult) {
+                const token = jwt.sign({ sub: user.id }, config.secret);
+                const { password, ...userWithoutPassword } = user;
+                return {
+                    ...userWithoutPassword,
+                    token
+                }
+            }
+        }
+    })
 }
 
 async function getAll() {
