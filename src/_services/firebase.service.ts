@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { Subject, pipe } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { Subject } from 'rxjs';
 import { Observable } from 'rxjs';
 import { switchMap, first } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 import { firestore } from 'firebase';
 import * as bcrypt from 'bcryptjs';
+import * as firebase from 'firebase';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +17,10 @@ export class FirebaseService {
   currentDay: Observable<any[]>;
   currentDayRef: string;
 
-  constructor(public db: AngularFirestore) { }
+  constructor(
+    public db: AngularFirestore,
+    public storage: AngularFireStorage
+  ) { }
 
   getAllUsers() {
     return this.db.collection('users').snapshotChanges();
@@ -235,5 +240,12 @@ export class FirebaseService {
 
   getCount(type: string) {
     this.db.collection(type).get()
+  }
+
+  addToBucket(path, file) {
+    console.log(path);
+    console.log(this.storage.ref(path).put(file).then(function(snapshot) {
+      console.log(snapshot);
+    }))
   }
 }

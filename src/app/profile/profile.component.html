@@ -1,1 +1,42 @@
-<h5>{{ user.username }}</h5>
+<div class="container">
+    <div class="row">
+        <h1>Your Account</h1>
+    </div>
+    <div class="row flexBox">
+        <div class="col-sm-4 float-left">
+            <h5 class="divider">Username</h5>
+            <h6>{{ user.username }}</h6>
+        </div>
+        <div class="col-sm-4 float-left">
+            <h5 class="divider">Email</h5>
+            <h6>email</h6>
+        </div>
+        <div class="col-sm-4 float-right">
+            <h5 class="divider">Profile Image</h5>
+            <small>Other users will see this when you post.</small>
+            <div *ngIf="!image">
+                <img #profileImage id="profileImage" src="https://via.placeholder.com/200" class="rounded-circle"
+                    width=200 height=200>
+                <br>
+                <small>You haven't added a profile image yet.</small>
+            </div>
+            <div *ngIf="image">
+                <img #profileImage id="profileImage" [src]="image" class="rounded-circle" width=200 height=200>
+                <br>
+                <button class="btn btn-primary" (click)="changeProfileImage()">Upload</button>
+            </div>
+            <input #imageUpload type="file" accept="image/" (change)="previewImage(imageUpload)">
+        </div>
+        <div class="col-sm-8 float-left">
+            <h5 class="divider">Bio <br><small>Write about yourself</small></h5>
+            <h6>details details details wrapping over multiple lines
+                    details details details wrapping over multiple lines
+                    details details details wrapping over multiple lines
+                    details details details wrapping over multiple lines
+                    details details details wrapping over multiple lines
+                    details details details wrapping over multiple lines
+
+            </h6>
+        </div>
+    </div>
+</div>

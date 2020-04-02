@@ -1,0 +1,33 @@
+#profileImage {
+    border: 2px solid gray;
+}
+
+.container {
+    padding-top: 2%;
+}
+
+small {
+    color: gray;
+}
+
+.divider {
+    margin-top: 1em;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid rgb(196, 190, 190);  
+}
+
+.col-sm-4 {
+    padding-left: 1em;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.flexBox {
+    display: block;
+}
