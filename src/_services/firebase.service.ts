@@ -242,10 +242,32 @@ export class FirebaseService {
     this.db.collection(type).get()
   }
 
+  // addToBucket(path, file) {
+  //   console.log(path);
+  //   this.storage.storage.ref(path).(file).then(function(snapshot) {
+  //     console.log(snapshot);
+  //   })
+  // }
+
   addToBucket(path, file) {
-    console.log(path);
-    console.log(this.storage.ref(path).put(file).then(function(snapshot) {
-      console.log(snapshot);
+    let storageRef = this.storage.ref(path);
+    storageRef.put(file).then(whatever => {
+      console.log(whatever);
+    }).catch(function(error) {
+      console.log(error);
+    });
+  }
+
+  getFromBucket(path) {
+    let storageRef = this.storage.ref(path);
+    return storageRef.getDownloadURL().pipe(map(function (url) {
+      return url;
     }))
+  }
+
+  editBio(values) {
+    this.db.collection('users', ref => ref.where('id', '==', JSON.parse(localStorage.getItem('currentUser')).id)).get().subscribe(user => {
+      user.docs[0].ref.update({ bio: values.bio});
+    })
   }
 }

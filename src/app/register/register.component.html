@@ -5,8 +5,15 @@
     <div class="card-body">
         <form [formGroup]="addForm" (ngSubmit)="addNewUser()">
             <div class="form-group">
-                <input type="text" class="form-control" formControlName="username" placeholder="Username">
-                <small>This is the name that will display to other users.</small>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" formControlName="username" placeholder="Username">
+                        <small>This is the name that will display to other users.</small>
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="email" class="form-control" formControlName="email" placeholder="Email address">
+                    </div>
+                </div>
             </div>
             <div class="form-group">
                 <input type="password" class="form-control" formControlName="password" placeholder="Password">

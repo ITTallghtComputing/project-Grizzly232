@@ -18,6 +18,7 @@ export class RegisterComponent implements OnInit {
     public router: Router) { 
       this.addForm = this.builder.group({
         username: '',
+        email: '',
         password: ''
       })
     }
@@ -28,6 +29,7 @@ export class RegisterComponent implements OnInit {
 
   addNewUser() {
     let values = this.addForm.getRawValue();
+    values["id"] = Math.floor(Math.random() * 1000000000);
     this.db.addNewUser(values);
     setTimeout(() => {
       this.router.navigate(['./../login']);

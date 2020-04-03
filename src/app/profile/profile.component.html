@@ -9,7 +9,7 @@
         </div>
         <div class="col-sm-4 float-left">
             <h5 class="divider">Email</h5>
-            <h6>email</h6>
+            <h6>{{ user.email }}</h6>
         </div>
         <div class="col-sm-4 float-right">
             <h5 class="divider">Profile Image</h5>
@@ -28,15 +28,25 @@
             <input #imageUpload type="file" accept="image/" (change)="previewImage(imageUpload)">
         </div>
         <div class="col-sm-8 float-left">
-            <h5 class="divider">Bio <br><small>Write about yourself</small></h5>
-            <h6>details details details wrapping over multiple lines
-                    details details details wrapping over multiple lines
-                    details details details wrapping over multiple lines
-                    details details details wrapping over multiple lines
-                    details details details wrapping over multiple lines
-                    details details details wrapping over multiple lines
-
-            </h6>
+            <h5 class="divider">Bio<br><small>Write about yourself</small><button class="btn btn-primary float-right"
+                    (click)="showBioForm = true">Edit Bio</button></h5>
+            <div *ngIf="showBioForm; else formElse">
+                <form [formGroup]="bioForm" (ngSubmit)="editBio()">
+                    <div class="form-group">
+                        <textarea *ngIf="user.bio; else innerFormElse" [value]=user.bio formControlName="bio"></textarea>
+                        <ng-template #innerFormElse>
+                                <textarea class="form-control" formControlName="bio"></textarea>
+                        </ng-template>
+                        <button class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+            <ng-template #formElse>
+                <h6 *ngIf="!user.bio; else bioElse">You haven't added a bio yet.</h6>
+                <ng-template #bioElse>
+                    <h6>{{ user.bio }}</h6>
+                </ng-template>
+            </ng-template>
         </div>
     </div>
 </div>
