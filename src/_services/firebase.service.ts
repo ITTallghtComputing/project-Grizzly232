@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
 import { firestore } from 'firebase';
 import * as bcrypt from 'bcryptjs';
 import * as firebase from 'firebase';
+import { User } from 'src/_models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +18,14 @@ export class FirebaseService {
   currentDay: Observable<any[]>;
   currentDayRef: string;
 
+  currentUser: User;
+
   constructor(
     public db: AngularFirestore,
     public storage: AngularFireStorage
-  ) { }
+  ) {
+    this.currentUser = JSON.parse(localStorage.getItem('currentItem'));
+   }
 
   getAllUsers() {
     return this.db.collection('users').snapshotChanges();
@@ -49,9 +54,9 @@ export class FirebaseService {
     return firestore.Timestamp.fromMillis(date);
   }
 
-  addNewUser(values) {
+  addNewUser(id, values) {
     values["password"] = bcrypt.hashSync(values["password"], 0);
-    return this.db.collection('users').add(values);
+    return this.db.collection('users').doc(id).set(values);
   }
 
   addDay(date: firestore.Timestamp) {
@@ -70,7 +75,7 @@ export class FirebaseService {
   }
 
   getDay(date: firestore.Timestamp) {
-    this.currentDay = this.db.collection('days', ref => ref.where('date', '==', date)).snapshotChanges();
+    this.currentDay = this.db.collection(`users/${this.currentUser.id}/days`, ref => ref.where('date', '==', date)).snapshotChanges();
     this.currentDay.subscribe(docRef => {
       this.setRef(docRef[0].payload.doc.id);
     })

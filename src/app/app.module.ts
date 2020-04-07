@@ -50,6 +50,7 @@ const appRoutes: Routes = [
   { path: 'post/:postId', component: PostComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   //keep this one at the bottom
   { path: '**', redirectTo: '' }
 ];

@@ -18,8 +18,6 @@ import {
   CalendarEvent,
   CalendarView
 } from 'angular-calendar';
-import { firestore } from 'firebase';
-
 declare var $: any;
 
 const colors: any = {
