@@ -31,7 +31,7 @@ exports.sumSessions = functions.firestore
 exports.sumMeals = functions.firestore
     .document('users/{userId}/days/{day}/meals/{mealId}')
     .onUpdate((snapshot, context) => {
-        let dayRefDoc = admin.firestore().collection(`users/${context.params.userId}/days`)        
+        let dayRefDoc = admin.firestore().collection(`users/${context.params.userId}/days`)
         return dayRefDoc.doc(context.params.day).get().then(inner => {
             let day = inner.data();
             return inner.ref.update({
@@ -44,7 +44,7 @@ exports.sumMeals = functions.firestore
 exports.addSessions = functions.firestore
     .document('users/{userId}/days/{day}/session/{sessionId}')
     .onCreate((snapshot, context) => {
-        let dayRefDoc = admin.firestore().collection(`users/${context.params.userId}/days`)        
+        let dayRefDoc = admin.firestore().collection(`users/${context.params.userId}/days`)
         return dayRefDoc.doc(context.params.day).get().then(inner => {
             return inner.ref.update({
                 activities: parseInt(inner.data().activities) + 1
@@ -55,7 +55,7 @@ exports.addSessions = functions.firestore
 exports.addMeals = functions.firestore
     .document('users/{userId}/days/{day}/meals/{mealId}')
     .onCreate((snapshot, context) => {
-        let dayRefDoc = admin.firestore().collection(`users/${context.params.userId}/days`)        
+        let dayRefDoc = admin.firestore().collection(`users/${context.params.userId}/days`)
         return dayRefDoc.doc(context.params.day).get().then(inner => {
             return inner.ref.update({
                 meals: parseInt(inner.data().meals) + 1
@@ -66,9 +66,9 @@ exports.addMeals = functions.firestore
 exports.deleteSessions = functions.firestore
     .document('users/{userId}/days/{day}/session/{sessionId}')
     .onDelete((snapshot, context) => {
-        let dayRefDoc = admin.firestore().collection(`users/${context.params.userId}/days`)        
+        let dayRefDoc = admin.firestore().collection(`users/${context.params.userId}/days`)
         return dayRefDoc.doc(context.params.day).get().then(inner => {
-            let day = inner.data();
+            let day = inner.ref.data();
             return inner.ref.update({
                 activities: parseInt(day.activities) - 1,
                 caloriesBurned: parseInt(day.caloriesBurned) - parseInt(snapshot.before.data().caloriesBurned),
@@ -80,9 +80,9 @@ exports.deleteSessions = functions.firestore
 exports.deleteMeals = functions.firestore
     .document('users/{userId}/days/{day}/meals/{mealId}')
     .onDelete((snapshot, context) => {
-        let dayRefDoc = admin.firestore().collection(`users/${context.params.userId}/days`)        
+        let dayRefDoc = admin.firestore().collection(`users/${context.params.userId}/days`)
         return dayRefDoc.doc(context.params.day).get().then(inner => {
-            let day = inner.data();
+            let day = inner.ref.data();
             return inner.ref.update({
                 meals: parseInt(day.meals) - 1,
                 caloriesGained: parseInt(day.caloriesGained) - parseInt(snapshot.before.data().caloriesGained)
@@ -108,6 +108,24 @@ exports.decrementReplies = functions.firestore
         return postRefDoc.get().then(inner => {
             return postRefDoc.update({
                 replies: inner.data().replies - 1
+            })
+        })
+    })
+
+exports.getAverages = functions.firestore
+    .document('users/{userId}/days/{day}')
+    .onUpdate((snapshot, context) => {
+        let averages = {};
+        let temp = [];
+        let dayRefDoc = admin.firestore().collection(`users/${context.params.userId}/days`)
+        return dayRefDoc.doc(context.params.day).get().then(inner => {
+            return inner.ref.collection('session').get().then(session => {
+                session.docs.forEach(doc => temp.push(parseInt(doc.data().duration)))
+            })
+        }).then(() => {
+            averages["sessionTime"] = (temp.reduce(function (a, b) { return a + b; }, 0)) / temp.length;
+            return admin.firestore().collection('users').doc(context.params.userId).get().then(inner => {
+                return inner.ref.update({ averageSessionTime: averages.sessionTime })
             })
         })
     })

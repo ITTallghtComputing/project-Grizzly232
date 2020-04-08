@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/_models/user';
+import { AngularFireFunctionsModule, AngularFireFunctions } from '@angular/fire/functions';
+import { FirebaseService } from 'src/_services/firebase.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,13 +10,12 @@ import { User } from 'src/_models/user';
 })
 export class DashboardComponent implements OnInit {
 
-  user: User;
+  currentUser: any;
 
-  constructor() { 
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
+  constructor(public fireFunctions: AngularFireFunctions, public db: FirebaseService) {
+    this.currentUser = this.db.getUser(JSON.parse(localStorage.getItem('currentUser')).id);
   }
 
   ngOnInit() {
   }
-
 }

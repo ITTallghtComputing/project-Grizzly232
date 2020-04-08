@@ -5,6 +5,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule, Routes } from '@angular/router';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireFunctionsModule } from '@angular/fire/functions';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { fakeBackendProvider } from './../_helpers/fake-backend';
@@ -92,6 +93,7 @@ const appRoutes: Routes = [
     AngularFireAnalyticsModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
+    AngularFireFunctionsModule,
     NgbModule,
     FormsModule,
     ReactiveFormsModule,

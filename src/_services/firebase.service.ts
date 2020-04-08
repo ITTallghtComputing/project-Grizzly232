@@ -31,6 +31,12 @@ export class FirebaseService {
     return this.db.collection('users').snapshotChanges();
   }
 
+  getUser(id) {
+    return this.db.firestore.collection('users').doc(id).get().then(inner => {
+      return inner.data();
+    })
+  }
+
   addUser(values) {
     return this.db.collection('users').add({
 
