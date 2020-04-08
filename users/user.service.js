@@ -30,6 +30,7 @@ function authenticate({ username, password }) {
 
         if (userDoc) {
             let user = userDoc.data();
+            user["id"] = userDoc.id;
             const pwdCompareResult = await bcrypt.compare(password, user.password);
 
             console.log(password);

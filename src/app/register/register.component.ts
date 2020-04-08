@@ -29,7 +29,7 @@ export class RegisterComponent implements OnInit {
 
   addNewUser() {
     let values = this.addForm.getRawValue();
-    let id = Math.floor(Math.random() * 1000000000);
+    let id = (Math.floor(Math.random() * 1000000000)).toString();
     this.db.addNewUser(id, values);
     setTimeout(() => {
       this.router.navigate(['./../login']);

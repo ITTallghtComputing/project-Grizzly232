@@ -10,17 +10,18 @@ admin.initializeApp();
 
 // var db = firebase.firestore;
 
+const userRef = admin.firestore().collection('users')
 const dayRef = admin.firestore().collection('days')
 const postRef = admin.firestore().collection('posts')
 
 //update methods
 exports.sumSessions = functions.firestore
-    .document('days/{day}/session/{sessionId}')
+    .document('users/{userId}/days/{day}/session/{sessionId}')
     .onUpdate((snapshot, context) => {
-        let dayRefDoc = dayRef.doc(context.params.day)
-        return dayRefDoc.get().then(inner => {
+        let dayRefDoc = admin.firestore().collection(`users/${context.params.userId}/days`)
+        return dayRefDoc.doc(context.params.day).get().then(inner => {
             let day = inner.data();
-            return dayRefDoc.update({
+            return inner.ref.update({
                 caloriesBurned: (parseInt(day.caloriesBurned) - parseInt(snapshot.before.data().caloriesBurned)) + parseInt(snapshot.after.data().caloriesBurned),
                 sessionTime: (parseInt(day.sessionTime) - parseInt(snapshot.before.data().duration)) + parseInt(snapshot.after.data().duration)
             })
@@ -28,12 +29,12 @@ exports.sumSessions = functions.firestore
     })
 
 exports.sumMeals = functions.firestore
-    .document('days/{day}/meals/{mealId}')
+    .document('users/{userId}/days/{day}/meals/{mealId}')
     .onUpdate((snapshot, context) => {
-        let dayRefDoc = dayRef.doc(context.params.day)
-        return dayRefDoc.get().then(inner => {
+        let dayRefDoc = admin.firestore().collection(`users/${context.params.userId}/days`)        
+        return dayRefDoc.doc(context.params.day).get().then(inner => {
             let day = inner.data();
-            return dayRefDoc.update({
+            return inner.ref.update({
                 caloriesGained: (parseInt(day.caloriesGained) - parseInt(snapshot.before.data().caloriesGained)) + parseInt(snapshot.after.data().caloriesGained)
             })
         })
@@ -41,34 +42,34 @@ exports.sumMeals = functions.firestore
 
 //add methods
 exports.addSessions = functions.firestore
-    .document('days/{day}/session/{sessionId}')
+    .document('users/{userId}/days/{day}/session/{sessionId}')
     .onCreate((snapshot, context) => {
-        let dayRefDoc = dayRef.doc(context.params.day)
-        return dayRefDoc.get().then(inner => {
-            return dayRefDoc.update({
+        let dayRefDoc = admin.firestore().collection(`users/${context.params.userId}/days`)        
+        return dayRefDoc.doc(context.params.day).get().then(inner => {
+            return inner.ref.update({
                 activities: parseInt(inner.data().activities) + 1
             })
         })
     });
 
 exports.addMeals = functions.firestore
-    .document('days/{day}/meals/{mealId}')
+    .document('users/{userId}/days/{day}/meals/{mealId}')
     .onCreate((snapshot, context) => {
-        let dayRefDoc = dayRef.doc(context.params.day)
-        return dayRefDoc.get().then(inner => {
-            return dayRefDoc.update({
+        let dayRefDoc = admin.firestore().collection(`users/${context.params.userId}/days`)        
+        return dayRefDoc.doc(context.params.day).get().then(inner => {
+            return inner.ref.update({
                 meals: parseInt(inner.data().meals) + 1
             })
         })
     });
 
 exports.deleteSessions = functions.firestore
-    .document('days/{day}/session/{sessionId}')
+    .document('users/{userId}/days/{day}/session/{sessionId}')
     .onDelete((snapshot, context) => {
-        let dayRefDoc = dayRef.doc(context.params.day)
-        return dayRefDoc.get().then(inner => {
+        let dayRefDoc = admin.firestore().collection(`users/${context.params.userId}/days`)        
+        return dayRefDoc.doc(context.params.day).get().then(inner => {
             let day = inner.data();
-            return dayRefDoc.update({
+            return inner.ref.update({
                 activities: parseInt(day.activities) - 1,
                 caloriesBurned: parseInt(day.caloriesBurned) - parseInt(snapshot.before.data().caloriesBurned),
                 sessionTime: parseInt(day.sessionTime) - parseInt(snapshot.before.data().duration)
@@ -77,12 +78,12 @@ exports.deleteSessions = functions.firestore
     })
 
 exports.deleteMeals = functions.firestore
-    .document('days/{day}/meals/{mealId}')
+    .document('users/{userId}/days/{day}/meals/{mealId}')
     .onDelete((snapshot, context) => {
-        let dayRefDoc = dayRef.doc(context.params.day)
-        return dayRefDoc.get().then(inner => {
+        let dayRefDoc = admin.firestore().collection(`users/${context.params.userId}/days`)        
+        return dayRefDoc.doc(context.params.day).get().then(inner => {
             let day = inner.data();
-            return dayRefDoc.update({
+            return inner.ref.update({
                 meals: parseInt(day.meals) - 1,
                 caloriesGained: parseInt(day.caloriesGained) - parseInt(snapshot.before.data().caloriesGained)
             })

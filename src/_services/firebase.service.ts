@@ -24,7 +24,7 @@ export class FirebaseService {
     public db: AngularFirestore,
     public storage: AngularFireStorage
   ) {
-    this.currentUser = JSON.parse(localStorage.getItem('currentItem'));
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
    }
 
   getAllUsers() {
@@ -45,7 +45,7 @@ export class FirebaseService {
   }
 
   isDayFilled(date): Observable<boolean> {
-    return this.db.collection('days', ref => ref.where('date', '==', date)).valueChanges().pipe(map(docRef => {
+    return this.db.collection(`users/${this.currentUser.id}/days`, ref => ref.where('date', '==', date)).valueChanges().pipe(map(docRef => {
       return docRef.length == 0;
     }))
   }
@@ -56,11 +56,12 @@ export class FirebaseService {
 
   addNewUser(id, values) {
     values["password"] = bcrypt.hashSync(values["password"], 0);
+    console.log("hello")
     return this.db.collection('users').doc(id).set(values);
   }
 
   addDay(date: firestore.Timestamp) {
-    return this.db.collection('days').add({
+    return this.db.collection(`users/${this.currentUser.id}/days`).add({
       date: date,
       caloriesBurned: 0,
       caloriesGained: 0,
@@ -77,31 +78,32 @@ export class FirebaseService {
   getDay(date: firestore.Timestamp) {
     this.currentDay = this.db.collection(`users/${this.currentUser.id}/days`, ref => ref.where('date', '==', date)).snapshotChanges();
     this.currentDay.subscribe(docRef => {
-      this.setRef(docRef[0].payload.doc.id);
+      if(docRef.length != 0)  
+        this.setRef(docRef[0].payload.doc.id);
     })
-    return this.db.collection('days', ref => ref.where('date', '==', date)).valueChanges();
+    return this.db.collection(`users/${this.currentUser.id}/days`, ref => ref.where('date', '==', date)).valueChanges();
   }
 
   getSessions(date: firestore.Timestamp) {
     return this.currentDay.pipe(switchMap(docRef => {
-      return this.db.collection('days').doc(docRef[0].payload.doc.id).collection('session').valueChanges();
+      return this.db.collection(`users/${this.currentUser.id}/days`).doc(docRef[0].payload.doc.id).collection('session').valueChanges();
     }))
   }
 
   getMeals(date: firestore.Timestamp) {
     return this.currentDay.pipe(switchMap(docRef => {
-      return this.db.collection('days').doc(docRef[0].payload.doc.id).collection('meals').valueChanges();
+      return this.db.collection(`users/${this.currentUser.id}/days`).doc(docRef[0].payload.doc.id).collection('meals').valueChanges();
     }))
   }
 
   addActivity(value) {
     return this.currentDay.pipe(switchMap(docRef => {
-      return this.db.collection('days').doc(docRef[0].payload.doc.id).collection('session').doc('3').set(value);
+      return this.db.collection(`users/${this.currentUser.id}/days`).doc(docRef[0].payload.doc.id).collection('session').doc('3').set(value);
     }))
   }
 
   updateActivity(value, index) {
-    let docRef = this.db.collection('days').doc(this.currentDayRef).collection('session').doc(index.toString());
+    let docRef = this.db.collection(`users/${this.currentUser.id}/days`).doc(this.currentDayRef).collection('session').doc(index.toString());
     return this.db.firestore.runTransaction(function (transaction) {
       return transaction.get(docRef.ref).then(function () {
         transaction.set(docRef.ref, value);
@@ -110,7 +112,7 @@ export class FirebaseService {
   }
 
   updateMeal(value, index) {
-    let docRef = this.db.collection('days').doc(this.currentDayRef).collection('meals').doc(index.toString())
+    let docRef = this.db.collection(`users/${this.currentUser.id}/days`).doc(this.currentDayRef).collection('meals').doc(index.toString())
     return this.db.firestore.runTransaction(function (transaction) {
       return transaction.get(docRef.ref).then(function () {
         transaction.set(docRef.ref, value);
@@ -119,7 +121,7 @@ export class FirebaseService {
   }
 
   deleteActivity(index) {
-    let ref = this.db.collection('days').doc(this.currentDayRef).collection('session').doc(index.toString())
+    let ref = this.db.collection(`users/${this.currentUser.id}/days`).doc(this.currentDayRef).collection('session').doc(index.toString())
     return this.db.firestore.runTransaction(function (transaction) {
       return transaction.get(ref.ref).then(function () {
         transaction.delete(ref.ref);
@@ -128,7 +130,7 @@ export class FirebaseService {
   }
 
   deleteMeal(index) {
-    let ref = this.db.collection('days').doc(this.currentDayRef).collection('meals').doc(index.toString())
+    let ref = this.db.collection(`users/${this.currentUser.id}/days`).doc(this.currentDayRef).collection('meals').doc(index.toString())
     return this.db.firestore.runTransaction(function (transaction) {
       return transaction.get(ref.ref).then(function () {
         transaction.delete(ref.ref);
