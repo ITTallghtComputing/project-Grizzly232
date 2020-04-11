@@ -112,20 +112,43 @@ exports.decrementReplies = functions.firestore
         })
     })
 
-exports.getAverages = functions.firestore
+exports.getAverage = functions.firestore
     .document('users/{userId}/days/{day}')
     .onUpdate((snapshot, context) => {
         let averages = {};
-        let temp = [];
+        let temp = {
+            sessionTime: [],
+            caloriesBurned: [],
+            activity: {}
+        };
+        let docs = [];
         let dayRefDoc = admin.firestore().collection(`users/${context.params.userId}/days`)
-        return dayRefDoc.doc(context.params.day).get().then(inner => {
-            return inner.ref.collection('session').get().then(session => {
-                session.docs.forEach(doc => temp.push(parseInt(doc.data().duration)))
-            })
+        return dayRefDoc.get().then(inner => {
+            for (doc of inner.docs) {
+                docs.push(doc.ref.collection('session').get());
+            }
         }).then(() => {
-            averages["sessionTime"] = (temp.reduce(function (a, b) { return a + b; }, 0)) / temp.length;
-            return admin.firestore().collection('users').doc(context.params.userId).get().then(inner => {
-                return inner.ref.update({ averageSessionTime: averages.sessionTime })
+            Promise.all(docs).then(docs => {
+                docs.forEach(doc => {
+                    doc.docs.forEach(doc => {
+                        let data = doc.data();
+                        temp["sessionTime"].push(parseInt(data.duration))
+                        temp["caloriesBurned"].push(parseInt(data.caloriesBurned))
+                        if (data.activity in temp["activity"])
+                            temp["activity"][data.activity]++;
+                        else
+                            temp["activity"][data.activity] = 1;
+                    });
+                })
+                console.log(temp["sessionTime"])
+                console.log(temp["caloriesBurned"])
+                averages["sessionTime"] = (temp["sessionTime"].reduce(function (a, b) { return a + b; }, 0)) / temp["sessionTime"].length;
+                averages["caloriesBurned"] = (temp["caloriesBurned"].reduce(function (a, b) { return a + b; }, 0)) / temp["caloriesBurned"].length;
+                averages["activity"] = Object.keys(temp["activity"]).find(key => temp["activity"][key] === Math.max.apply(null, Object.keys(temp["activity"]).map(function (key) { return temp["activity"][key] })));
+                console.log(averages);
+                return admin.firestore().collection('users').doc(context.params.userId).get().then(inner => {
+                    return inner.ref.update({ averageSessionTime: averages.sessionTime, averageCaloriesBurned: averages.caloriesBurned, favoriteActivity: averages.activity })
+                })
             })
         })
     })

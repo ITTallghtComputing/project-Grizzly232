@@ -1,2 +1,4 @@
 <h1>Your Dashboard</h1>
-<h5>On average, your workout sessions last for <strong>{{ (currentUser | async)?.averageSessionTime }} minutes.</strong></h5>
+<h5>On average, your workout sessions last for <strong>{{ (currentUser | async)?.averageSessionTime | number: '1.0-0' }} minutes.</strong></h5>
+<h5>From these sessions, you usually burn around <strong>{{ (currentUser | async)?.averageCaloriesBurned | number: '1.0-0' }} calories.</strong></h5>
+<h5>Your favorite activity is <strong>{{ (currentUser | async)?.favoriteActivity }}.</strong></h5>
