@@ -140,12 +140,9 @@ exports.getAverage = functions.firestore
                             temp["activity"][data.activity] = 1;
                     });
                 })
-                console.log(temp["sessionTime"])
-                console.log(temp["caloriesBurned"])
                 averages["sessionTime"] = (temp["sessionTime"].reduce(function (a, b) { return a + b; }, 0)) / temp["sessionTime"].length;
                 averages["caloriesBurned"] = (temp["caloriesBurned"].reduce(function (a, b) { return a + b; }, 0)) / temp["caloriesBurned"].length;
                 averages["activity"] = Object.keys(temp["activity"]).find(key => temp["activity"][key] === Math.max.apply(null, Object.keys(temp["activity"]).map(function (key) { return temp["activity"][key] })));
-                console.log(averages);
                 return admin.firestore().collection('users').doc(context.params.userId).get().then(inner => {
                     return inner.ref.update({ averageSessionTime: averages.sessionTime, averageCaloriesBurned: averages.caloriesBurned, favoriteActivity: averages.activity })
                 })
