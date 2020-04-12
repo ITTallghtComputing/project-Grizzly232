@@ -26,18 +26,17 @@ export class DashboardComponent implements OnInit {
   getChart() {
     let out = [];
     let averages = [];
+    let labels = [];
     this.days.subscribe(days => {
-      console.log(days);
       let compDate = new Date(days[0].date.toDate().getTime());
-      console.log(days[days.length - 1].date.toDate())
-      console.log(compDate);
       let endDate = Math.ceil((days[days.length - 1].date.toDate().getTime() - compDate.getTime()) / (7 * 24 * 60 * 60 * 1000));
-      console.log(endDate);
       for (let i = 0; i < endDate; i++) {
         compDate.setDate(compDate.getDate() - compDate.getDay());
         let toDate = new Date(compDate.getTime());
         toDate.setDate(toDate.getDate() + 6);
         for (compDate; compDate.getTime() <= toDate.getTime(); compDate.setDate(compDate.getDate() + 1)) {
+          if(compDate.getDay() == 0)
+            labels.push(`Week ${i + 1}`)
           for (let day of days) {
             if (day.date.toDate().getTime() == compDate.getTime()) {
               out.push(day.caloriesBurned)
@@ -55,7 +54,7 @@ export class DashboardComponent implements OnInit {
       this.chart = new Chart('canvas', {
         type: 'line',
         data: {
-          labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'],
+          labels: labels,
           datasets: [{
             label: '# of calories burned',
             data: this.averages,
