@@ -81,6 +81,10 @@ export class FirebaseService {
     this.currentDayRef = ref;
   }
 
+  getDays() {
+    return this.db.collection(`users/${this.currentUser.id}/days`, ref => ref.orderBy("date", "asc")).valueChanges();
+  }
+
   getDay(date: firestore.Timestamp) {
     this.currentDay = this.db.collection(`users/${this.currentUser.id}/days`, ref => ref.where('date', '==', date)).snapshotChanges();
     this.currentDay.subscribe(docRef => {
