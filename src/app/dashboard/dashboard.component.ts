@@ -56,7 +56,7 @@ export class DashboardComponent implements OnInit {
         data: {
           labels: labels,
           datasets: [{
-            label: '# of calories burned',
+            label: 'Average number of calories burned per week',
             data: this.averages,
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
@@ -74,7 +74,7 @@ export class DashboardComponent implements OnInit {
               'rgba(153, 102, 255, 1)',
               'rgba(255, 159, 64, 1)'
             ],
-            borderWidth: 10,
+            borderWidth: 5,
             fill: false
           }]
         },
