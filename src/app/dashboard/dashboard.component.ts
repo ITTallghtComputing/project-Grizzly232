@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from 'src/_models/user';
-import { AngularFireFunctionsModule, AngularFireFunctions } from '@angular/fire/functions';
+import { AngularFireFunctions } from '@angular/fire/functions';
 import { FirebaseService } from 'src/_services/firebase.service';
 import { Chart } from 'chart.js';
-import { LineToLineMappedSource } from 'webpack-sources';
 import { Observable } from 'rxjs';
 
 @Component({
