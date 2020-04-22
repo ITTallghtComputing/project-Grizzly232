@@ -166,6 +166,7 @@ export class FirebaseService {
       category: values.category,
       id: values.id,
       subject: values.subject,
+      poster: values.poster,
       timestamp: firestore.Timestamp.fromDate(new Date()),
       replies: 0
     })
@@ -197,6 +198,7 @@ export class FirebaseService {
     return this.db.collection('posts', ref => ref.where('id', '==', postId)).snapshotChanges().pipe(first()).subscribe(docRef => {
       return this.db.collection('posts').doc(docRef[0].payload.doc.id).collection('comments').add({
         body: values.body,
+        poster: values.poster,
         timestamp: firestore.Timestamp.fromDate(new Date())
       });
     })

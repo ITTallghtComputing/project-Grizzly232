@@ -38,7 +38,7 @@
                 </a>
                 <button class="btn btn-primary right" type="button" data-toggle="collapse"
                     [attr.data-target]="'#detail'+i">Preview</button>
-                <small class="right">&lt;Name of User&gt;</small>
+                <small class="right">Posted by <strong>{{ post.poster }}</strong></small>
                 <small class="right" *ngIf="post.replies; else elseBlock">Replies: {{ post.replies }}</small>
                 <ng-template #elseBlock><small class="right">No replies yet</small></ng-template>
             </div>

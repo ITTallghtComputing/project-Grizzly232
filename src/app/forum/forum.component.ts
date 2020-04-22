@@ -45,6 +45,7 @@ export class ForumComponent implements OnInit {
   addNewPost() {
     let values = this.addForm.getRawValue();
     this.currentCategory.subscribe(category => {
+      values["poster"] = JSON.parse(localStorage.getItem("currentUser")).username;
       values["category"] = category;
       values["id"] = Math.floor(Math.random() * 1000000000);
       this.db.addNewPost(values);

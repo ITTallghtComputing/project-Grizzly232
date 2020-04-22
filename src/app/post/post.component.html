@@ -1,7 +1,7 @@
 <div *ngFor="let p of post | async">
     <div class="card">
         <div class="card-header">
-            <small class="userDescription">Details about the user who posted this go here</small>
+            <small class="userDescription">Posted by <strong>{{ p.poster }}</strong></small>
             <h5><a href="forum/{{p.category}}">{{ p.category }}</a> - {{ p.subject }}</h5>
             <label>{{ p.timestamp.toDate() }}</label>
         </div>
@@ -68,7 +68,7 @@
         <div class="card">
             <div class="card-header">
                 <label>{{ comment.timestamp.toDate() }}</label>
-                <small class="userDescription">Details about the user who posted this go here</small>
+                <small class="userDescription">Posted by <strong>{{ comment.poster }}</strong></small>
             </div>
             <div class="card-body">
                 {{ comment.body }}

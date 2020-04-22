@@ -1,41 +1,31 @@
 <div class="container">
     <div class="row">
-        <h1>Your Account</h1>
+        <div *ngIf="isCurrentUser; else elseBlock">
+            <h1>Your Profile</h1>
+        </div>
+        <ng-template #elseBlock>
+            <h1>{{ (user | async)?.username }}'s Profile</h1>
+        </ng-template>
     </div>
     <div class="row flexBox">
         <div class="col-sm-4 float-left">
             <h5 class="divider">Username</h5>
-            <h6>{{ user.username }}</h6>
+            <h6>{{ (user | async)?.username }}</h6>
         </div>
         <div class="col-sm-4 float-left">
             <h5 class="divider">Email</h5>
-            <h6>{{ user.email }}</h6>
-        </div>
-        <div class="col-sm-4 float-right">
-            <h5 class="divider">Profile Image</h5>
-            <small>Other users will see this when you post.</small>
-            <div *ngIf="!image">
-                <img #profileImage id="profileImage" src="https://via.placeholder.com/200" class="rounded-circle"
-                    width=200 height=200>
-                <br>
-                <small>You haven't added a profile image yet.</small>
-            </div>
-            <div *ngIf="image">
-                <img #profileImage id="profileImage" [src]="image" class="rounded-circle" width=200 height=200>
-                <br>
-                <button class="btn btn-primary" (click)="changeProfileImage()">Upload</button>
-            </div>
-            <input #imageUpload type="file" accept="image/" (change)="previewImage(imageUpload)">
+            <h6>{{ (user | async)?.email }}</h6>
         </div>
         <div class="col-sm-8 float-left">
-            <h5 class="divider">Bio<br><small>Write about yourself</small><button class="btn btn-primary float-right"
+            <h5 class="divider">Bio<br><small>Write about yourself</small><button *ngIf="isCurrentUser" class="btn btn-primary float-right"
                     (click)="showBioForm = true">Edit Bio</button></h5>
             <div *ngIf="showBioForm; else formElse">
                 <form [formGroup]="bioForm" (ngSubmit)="editBio()">
                     <div class="form-group">
-                        <textarea *ngIf="user.bio; else innerFormElse" [value]=user.bio formControlName="bio"></textarea>
+                        <textarea *ngIf="user.bio; else innerFormElse" [value]=user.bio
+                            formControlName="bio"></textarea>
                         <ng-template #innerFormElse>
-                                <textarea class="form-control" formControlName="bio"></textarea>
+                            <textarea class="form-control" formControlName="bio"></textarea>
                         </ng-template>
                         <button class="btn btn-primary">Submit</button>
                     </div>
@@ -44,7 +34,7 @@
             <ng-template #formElse>
                 <h6 *ngIf="!user.bio; else bioElse">You haven't added a bio yet.</h6>
                 <ng-template #bioElse>
-                    <h6>{{ user.bio }}</h6>
+                    <h6>{{ (user | async)?.bio }}</h6>
                 </ng-template>
             </ng-template>
         </div>

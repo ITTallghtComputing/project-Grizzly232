@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { User } from 'src/_models/user';
 import { FirebaseService } from './../../_services/firebase.service';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { DocumentData } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-profile',
@@ -11,7 +14,8 @@ import { FirebaseService } from './../../_services/firebase.service';
 
 export class ProfileComponent implements OnInit {
 
-  user: User;
+  user: any;
+  isCurrentUser: boolean;
   image: any;
 
   bioForm: FormGroup;
@@ -19,43 +23,34 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     public db: FirebaseService,
-    public builder: FormBuilder) {
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
+    public builder: FormBuilder,
+    public route: ActivatedRoute,
+    ) {
   }
 
   ngOnInit() {
-    this.db.getFromBucket(`images/profiles/${this.user.id}.png`).subscribe(url => {
-      this.image = url;
-    })
+    let profileId = this.route.paramMap.pipe(
+      map((params: ParamMap) => {
+        return params.get("profileId");
+      })
+    )
+
+      profileId.subscribe(id => {
+        this.user = this.db.getUser(id);
+        if(id === JSON.parse(localStorage.getItem("currentUser")).id)
+          this.isCurrentUser = true;
+      })
+
     this.bioForm = this.builder.group({
       bio: ''
     })
   }
 
-  changeProfileImage() {
-    if (this.image) {
-      if (window.confirm("Are you sure you want to change your profile picture?")) {
-        console.log(this.user.id);
-        console.log(this.image)
-        // this.db.addToBucket(`images/profiles/${this.user.id}.png`, this.image)
-      }
-    }
-  }
-
-  previewImage(image) {
-    let reader = new FileReader();
-    console.log(image);
-    reader.readAsDataURL(image.files[0])
-    // reader.onload = (event) => {
-    //   console.log(event.target.result)
-    // }
-  }
-
   editBio() {
-    let values = this.bioForm.getRawValue();
-    this.db.editBio(values);
-    this.user["bio"] = values.bio;
-    localStorage.setItem("currentUser", JSON.stringify(this.user)); 
-    this.showBioForm = false;
+    // let values = this.bioForm.getRawValue();
+    // this.db.editBio(values);
+    // this.user["bio"] = values.bio;
+    // localStorage.setItem("currentUser", JSON.stringify(this.user)); 
+    // this.showBioForm = false;
   }
 }

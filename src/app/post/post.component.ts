@@ -63,6 +63,7 @@ export class PostComponent implements OnInit {
 
   addNewComment() {
     let values = this.addForm.getRawValue();
+    values["poster"] = JSON.parse(localStorage.getItem("currentUser")).username;
     this.id.pipe(first()).subscribe(postId => {
       this.db.addComment(values, postId);
       $('#commentAddedToast').toast('show')
