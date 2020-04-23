@@ -33,37 +33,37 @@ export class DayDetailComponent implements OnInit {
   mealColumnDefs = [
     { headerName: 'Name', field: 'name', editable: true, sortable: true, filter: true, checkboxSelection: true},
     { headerName: 'Calories Gained', field: 'caloriesGained', editable: true, sortable: true, filter: true},
-  ]
+  ];
 
   constructor(public db: FirebaseService,
-    public route: ActivatedRoute,
-    public dateHandler: DateHandlerService,
-    public builder: FormBuilder) {
+              public route: ActivatedRoute,
+              public dateHandler: DateHandlerService,
+              public builder: FormBuilder) {
     this.mealForm = this.builder.group({
       name: '',
       calories: 0
-    })
+    });
     this.activityForm = this.builder.group({
       activity: '',
       caloriesBurned: 0,
       duration: 0
-    })
+    });
   }
 
   ngOnInit() {
     this.date = this.route.paramMap.pipe(
       map((params: ParamMap) => {
-        return params.get("date");
+        return params.get('date');
       })
-    )
+    );
 
     this.date.subscribe(date => {
-      let tempDate = this.dateHandler.convertToFirebaseDate(date);
+      const tempDate = this.dateHandler.convertToFirebaseDate(date);
       this.day = this.db.getDay(tempDate);
       this.sessions = this.db.getSessions(tempDate);
       this.meals = this.db.getMeals(tempDate);
       this.dateString = this.dateHandler.convertToOutDate(new Date(date));
-    })
+    });
   }
 
   onSessionGridReady(params) {
@@ -91,18 +91,20 @@ export class DayDetailComponent implements OnInit {
   }
 
   isSelected() {
-      return this.mealGrid.gridOptionsWrapper.gridOptions.api.getSelectedNodes().length == 0;
+      return this.mealGrid.gridOptionsWrapper.gridOptions.api.getSelectedNodes().length === 0;
   }
 
   deleteActivity() {
-    let row = this.sessionGrid.gridOptionsWrapper.gridOptions.api.getSelectedNodes();
-    if(row.length != 0)
-      this.db.deleteActivity(parseInt(row[0].id) + 1);
+    const row = this.sessionGrid.gridOptionsWrapper.gridOptions.api.getSelectedNodes();
+    if (row.length !== 0) {
+      this.db.deleteActivity(parseInt(row[0].id, 10) + 1);
+    }
   }
 
   deleteMeal() {
-    let row = this.mealGrid.gridOptionsWrapper.gridOptions.api.getSelectedNodes();
-    if(row.length != 0)
-      this.db.deleteMeal(parseInt(row[0].id) + 1);
+    const row = this.mealGrid.gridOptionsWrapper.gridOptions.api.getSelectedNodes();
+    if (row.length !== 0) {
+      this.db.deleteMeal(parseInt(row[0].id, 10) + 1);
+    }
   }
 }

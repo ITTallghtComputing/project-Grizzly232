@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule, Routes } from '@angular/router';
@@ -8,18 +8,14 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireFunctionsModule } from '@angular/fire/functions';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { fakeBackendProvider } from './../_helpers/fake-backend';
 import { JwtInterceptor } from './../_helpers/jwt.interceptor';
-import { ErrorInterceptor } from './../_helpers/error.interceptor'
+import { ErrorInterceptor } from './../_helpers/error.interceptor';
 import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { environment } from 'src/environments/environment';
 import { UserComponent } from './user/user.component';
-import { Session } from './session/session.component';
-import { Swim } from './swim/swim.component';
-import { SessionListComponent } from './session-list/session-list.component';
 import { SwimFormComponent } from './swim-form/swim-form.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MealTrackerComponent } from './meal-tracker/meal-tracker.component';
@@ -29,10 +25,10 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CalendarComponent } from './calendar/calendar.component';
 import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login.component'
+import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './../_helpers/auth.guard';
 import { DayViewComponent } from './day-view/day-view.component';
-import { DayDetailComponent } from './day-detail/day-detail.component'
+import { DayDetailComponent } from './day-detail/day-detail.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { ForumComponent } from './forum/forum.component';
 import { ForumListComponent } from './forum-list/forum-list.component';
@@ -43,7 +39,6 @@ import { ProfileComponent } from './profile/profile.component';
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'sessions', component: SessionListComponent },
   { path: 'tracker', component: MealTrackerComponent, canActivate: [AuthGuard] },
   { path: 'day/:date', component: DayDetailComponent, canActivate: [AuthGuard] },
   { path: 'forum/:category', component: ForumComponent },
@@ -52,7 +47,7 @@ const appRoutes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'profile/:profileId', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  //keep this one at the bottom
+  // keep this one at the bottom
   { path: '**', redirectTo: '' }
 ];
 
@@ -60,9 +55,6 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     UserComponent,
-    Session,
-    Swim,
-    SessionListComponent,
     SwimFormComponent,
     DashboardComponent,
     MealTrackerComponent,

@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AuthenticationService } from './../_services/authentication.service';
 import { User } from './../_models/user';
 
 @Component({ selector: 'app-root', templateUrl: 'app.component.html' })
-export class AppComponent {
+export class AppComponent implements OnInit {
     currentUser: User;
 
     constructor(
@@ -14,7 +14,7 @@ export class AppComponent {
     ) {}
 
     ngOnInit() {
-        this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
 
     logout() {

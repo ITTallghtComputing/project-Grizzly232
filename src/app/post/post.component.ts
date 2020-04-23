@@ -3,7 +3,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, switchMap, take, first } from 'rxjs/operators';
 import { FirebaseService } from '../../_services/firebase.service';
-import { FormGroup, FormBuilder } from '@angular/forms'
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 
 declare var $: any;
@@ -17,9 +17,9 @@ export class PostComponent implements OnInit {
 
   post: any;
   comments: any;
-  id: Observable<number>
+  id: Observable<number>;
 
-  addForm: FormGroup
+  addForm: FormGroup;
   showAddForm: boolean;
 
   editForm: FormGroup;
@@ -27,6 +27,8 @@ export class PostComponent implements OnInit {
 
   showCommentEditForm: boolean;
   formIndex: number;
+
+  user: string;
 
   constructor(
     public db: FirebaseService,
@@ -38,23 +40,27 @@ export class PostComponent implements OnInit {
   ngOnInit() {
     this.id = this.route.paramMap.pipe(
       map((params: ParamMap) => {
-        return parseInt(params.get("postId"));
+        return parseInt(params.get('postId'), 10);
       })
-    )
+    );
+
+    if(localStorage.getItem("currentUser")) {
+      this.user = JSON.parse(localStorage.getItem("currentUser")).username;
+    }
 
     this.id.subscribe(postId => {
       this.post = this.db.getPostById(postId);
       this.comments = this.db.getComments(postId);
-    })
+    });
 
     this.addForm = this.builder.group({
       body: ''
-    })
+    });
 
     this.editForm = this.builder.group({
       subject: '',
       body: ''
-    })
+    });
   }
 
   debug() {
@@ -62,38 +68,38 @@ export class PostComponent implements OnInit {
   }
 
   addNewComment() {
-    let values = this.addForm.getRawValue();
-    values["poster"] = JSON.parse(localStorage.getItem("currentUser")).username;
+    const values = this.addForm.getRawValue();
+    values.poster = JSON.parse(localStorage.getItem('currentUser')).username;
     this.id.pipe(first()).subscribe(postId => {
       this.db.addComment(values, postId);
-      $('#commentAddedToast').toast('show')
-      setTimeout(function() {
+      $('#commentAddedToast').toast('show');
+      setTimeout(() => {
         location.reload();
-      }, 2000)
-    })
+      }, 2000);
+    });
   }
 
   editPost() {
-    let values = this.editForm.getRawValue();
+    const values = this.editForm.getRawValue();
     this.id.subscribe(postId => {
       this.db.updatePost(values, postId);
-      $('#postEditedToast').toast('show')
-      setTimeout(function() {
+      $('#postEditedToast').toast('show');
+      setTimeout(() => {
         location.reload();
-      }, 2000)
-    })
+      }, 2000);
+    });
   }
 
   editComment(timestamp) {
-    let values = this.addForm.getRawValue();
-    values["timestamp"] = timestamp;
+    const values = this.addForm.getRawValue();
+    values.timestamp = timestamp;
     this.id.subscribe(postId => {
       this.db.updateComment(values, postId);
-      $('#commentEditedToast').toast('show')
-      setTimeout(function() {
+      $('#commentEditedToast').toast('show');
+      setTimeout(() => {
         location.reload();
-      }, 2000)
-    })
+      }, 2000);
+    });
   }
 
   deletePost() {
@@ -101,7 +107,7 @@ export class PostComponent implements OnInit {
       this.id.subscribe(postId => {
         this.db.deletePost(postId);
         this.router.navigate(['../../forum']);
-      })
+      });
     }
   }
 
@@ -109,11 +115,11 @@ export class PostComponent implements OnInit {
     if (window.confirm('Are you sure you want to delete this comment?')) {
       this.id.subscribe(postId => {
         this.db.deleteComment(timestamp, postId);
-        $('#commentDeletedToast').toast('show')
-        setTimeout(function() {
+        $('#commentDeletedToast').toast('show');
+        setTimeout(() => {
           location.reload();
-        }, 3000)
-      })
+        }, 3000);
+      });
     }
   }
 

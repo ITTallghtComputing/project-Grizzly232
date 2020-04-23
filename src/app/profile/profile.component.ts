@@ -29,28 +29,29 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    let profileId = this.route.paramMap.pipe(
+    const profileId = this.route.paramMap.pipe(
       map((params: ParamMap) => {
-        return params.get("profileId");
+        return params.get('profileId');
       })
-    )
+    );
 
-      profileId.subscribe(id => {
+    profileId.subscribe(id => {
         this.user = this.db.getUser(id);
-        if(id === JSON.parse(localStorage.getItem("currentUser")).id)
+        if (id === JSON.parse(localStorage.getItem('currentUser')).id) {
           this.isCurrentUser = true;
-      })
+        }
+      });
 
     this.bioForm = this.builder.group({
       bio: ''
-    })
+    });
   }
 
   editBio() {
     // let values = this.bioForm.getRawValue();
     // this.db.editBio(values);
     // this.user["bio"] = values.bio;
-    // localStorage.setItem("currentUser", JSON.stringify(this.user)); 
+    // localStorage.setItem("currentUser", JSON.stringify(this.user));
     // this.showBioForm = false;
   }
 }

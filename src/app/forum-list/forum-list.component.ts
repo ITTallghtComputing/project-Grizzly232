@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ForumListComponent implements OnInit {
 
-  categories = ["General", "Workout Routines", "Meal Planning", "Tips and Advice"];
+  categories = ['General', 'Workout Routines', 'Meal Planning', 'Tips and Advice'];
 
   constructor() { }
 

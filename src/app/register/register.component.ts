@@ -13,26 +13,26 @@ export class RegisterComponent implements OnInit {
   addForm: FormGroup;
 
   constructor(
-    public builder: FormBuilder, 
+    public builder: FormBuilder,
     public db: FirebaseService,
-    public router: Router) { 
+    public router: Router) {
       this.addForm = this.builder.group({
         username: '',
         email: '',
         password: ''
-      })
+      });
     }
 
   ngOnInit() {
-    
+
   }
 
   addNewUser() {
-    let values = this.addForm.getRawValue();
-    let id = (Math.floor(Math.random() * 1000000000)).toString();
+    const values = this.addForm.getRawValue();
+    const id = (Math.floor(Math.random() * 1000000000)).toString();
     this.db.addNewUser(id, values);
     setTimeout(() => {
       this.router.navigate(['./../login']);
-    }, 1000)
+    }, 1000);
   }
 }

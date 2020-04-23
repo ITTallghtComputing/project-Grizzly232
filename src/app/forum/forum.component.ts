@@ -12,11 +12,13 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 })
 export class ForumComponent implements OnInit {
 
-  posts: any
+  posts: any;
   currentCategory: Observable<string>;
 
   addForm: FormGroup;
   showForm: boolean;
+
+  user: string;
 
   constructor(
     public db: FirebaseService,
@@ -28,28 +30,32 @@ export class ForumComponent implements OnInit {
   ngOnInit() {
     this.currentCategory = this.route.paramMap.pipe(
       map((params: ParamMap) => {
-        return params.get("category");
+        return params.get('category');
       })
-    )
+    );
+
+    if(localStorage.getItem("currentUser")) {
+      this.user = JSON.parse(localStorage.getItem("currentUser")).username;
+    }
 
     this.currentCategory.subscribe(category => {
       this.posts = this.db.getPosts(category);
-    })
+    });
 
     this.addForm = this.builder.group({
       subject: '',
       body: ''
-    })
+    });
   }
 
   addNewPost() {
-    let values = this.addForm.getRawValue();
+    const values = this.addForm.getRawValue();
     this.currentCategory.subscribe(category => {
-      values["poster"] = JSON.parse(localStorage.getItem("currentUser")).username;
-      values["category"] = category;
-      values["id"] = Math.floor(Math.random() * 1000000000);
+      values.poster = this.user;
+      values.category = category;
+      values.id = Math.floor(Math.random() * 1000000000);
       this.db.addNewPost(values);
-      this.router.navigate([`./../../post/${values["id"]}`]);
-    })
+      this.router.navigate([`./../../post/${values.id}`]);
+    });
   }
 }

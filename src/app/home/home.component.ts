@@ -1,16 +1,13 @@
-import { Component } from '@angular/core';
-import { first } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
 
 import { User } from './../../_models/user';
-import { UserService } from './../../_services/user.service';
-import { AuthenticationService } from './../../_services/authentication.service';
 
 @Component({ templateUrl: 'home.component.html' })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
     loading = false;
     user: User;
 
-    constructor(private userService: UserService) { }
+    constructor() { }
 
     ngOnInit() {
         this.user = JSON.parse(localStorage.getItem('currentUser'));

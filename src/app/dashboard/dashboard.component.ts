@@ -23,28 +23,30 @@ export class DashboardComponent implements OnInit {
 
   getChart() {
     let out = [];
-    let averages = [];
-    let labels = [];
+    const averages = [];
+    const labels = [];
     this.days.subscribe(days => {
-      let compDate = new Date(days[0].date.toDate().getTime());
-      let endDate = Math.ceil((days[days.length - 1].date.toDate().getTime() - compDate.getTime()) / (7 * 24 * 60 * 60 * 1000));
+      const compDate = new Date(days[0].date.toDate().getTime());
+      const endDate = Math.ceil((days[days.length - 1].date.toDate().getTime() - compDate.getTime()) / (7 * 24 * 60 * 60 * 1000));
       for (let i = 0; i < endDate; i++) {
         compDate.setDate(compDate.getDate() - compDate.getDay());
-        let toDate = new Date(compDate.getTime());
+        const toDate = new Date(compDate.getTime());
         toDate.setDate(toDate.getDate() + 6);
         for (compDate; compDate.getTime() <= toDate.getTime(); compDate.setDate(compDate.getDate() + 1)) {
-          if(compDate.getDay() == 0)
-            labels.push(`Week ${i + 1}`)
-          for (let day of days) {
-            if (day.date.toDate().getTime() == compDate.getTime()) {
-              out.push(day.caloriesBurned)
+          if (compDate.getDay() === 0) {
+            labels.push(`Week ${i + 1}`);
+          }
+          for (const day of days) {
+            if (day.date.toDate().getTime() === compDate.getTime()) {
+              out.push(day.caloriesBurned);
             }
           }
         }
-        if (out.length == 0)
+        if (out.length === 0) {
           averages.push(0);
-        else
-          averages.push(out.reduce(function (a, b) { return a + b }) / out.length)
+        } else {
+          averages.push(out.reduce((a, b) => a + b) / out.length);
+        }
         console.log(out);
         out = [];
       }
@@ -52,7 +54,7 @@ export class DashboardComponent implements OnInit {
       this.chart = new Chart('canvas', {
         type: 'line',
         data: {
-          labels: labels,
+          labels,
           datasets: [{
             label: 'Average number of calories burned per week',
             data: this.averages,
@@ -87,7 +89,7 @@ export class DashboardComponent implements OnInit {
         }
       });
     }
-    )
+    );
   }
 
   ngOnInit() {

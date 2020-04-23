@@ -11,14 +11,13 @@
                 <span class="metaText">Last edited: {{ p.lastEdit.toDate() }}</span>
             </div>
         </div>
-        <div class="card-footer">
-            <button class="btn btn-primary">Reply</button>
+        <div class="card-footer" *ngIf="user == p.poster">
             <button class="btn btn-success"
                 (click)="showEditForm = true; setSubject(p.subject); setBody(p.body)">Edit</button>
             <button class="btn btn-danger" (click)="deletePost()">Delete</button>
         </div>
     </div>
-    <button class="btn btn-primary" (click)="showAddForm = true">Add a comment</button>
+    <button *ngIf="user" class="btn btn-primary" (click)="showAddForm = true">Add a comment</button>
     <div *ngIf="showAddForm">
         <h5>Write your new comment</h5>
         <form [formGroup]="addForm" (ngSubmit)="addNewComment()">
@@ -76,7 +75,7 @@
                     <span class="metaText">Last edited: {{ comment.lastEdit.toDate() }}</span>
                 </div>
             </div>
-            <div class="card-footer">
+            <div class="card-footer" *ngIf="user == comment.poster">
                 <button class="btn btn-success" (click)="formIndex = i; setBody(comment.body)">Edit</button>
                 <button class="btn btn-danger" (click)="deleteComment(comment.timestamp)">Delete</button>
             </div>
@@ -137,6 +136,6 @@
         <strong class="mr-auto">Success!</strong>
     </div>
     <div class="toast-body">
-        Your comment has been deleted.
+        Your comment has been edited.
     </div>
 </div>

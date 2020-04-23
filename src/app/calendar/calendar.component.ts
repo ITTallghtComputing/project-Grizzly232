@@ -42,7 +42,7 @@ const colors: any = {
   templateUrl: './calendar.component.html'
 })
 export class CalendarComponent {
-  
+
   @ViewChild('dayModal', { static: true }) dayModal: any;
   @Output() dayOpened = new EventEmitter<boolean>();
 
@@ -68,7 +68,7 @@ export class CalendarComponent {
     }
   ];
 
-  activeDayIsOpen: boolean = true;
+  activeDayIsOpen = true;
 
   constructor(private modal: NgbModal, public db: FirebaseService) { }
 
@@ -96,7 +96,7 @@ export class CalendarComponent {
 
   openDay(date) {
     this.dateToPass = date.date;
-    $('#dayModal').modal('show')
+    $('#dayModal').modal('show');
     this.dayOpened.emit(date.date);
   }
 }

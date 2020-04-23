@@ -16,11 +16,11 @@ export class MealFormComponent implements OnInit {
     this.addForm2 = this.builder.group({
       name: '',
       calories: 0
-    })
+    });
   }
 
   ngOnInit() {
-    
+
   }
 
   cancel() {
