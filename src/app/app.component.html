@@ -4,7 +4,7 @@
       <a class="nav-item nav-link" routerLink="/">Home</a>
       <a *ngIf="currentUser; else elseBlock" class="nav-item nav-link" (click)="logout()">Logout</a>
       <ng-template #elseBlock><a class="nav-item nav-link" href="/login">Login</a></ng-template>
-      <a *ngIf="currentUser" class="nav-item nav-link" href="/profile">{{ currentUser.username }}</a>
+      <a *ngIf="currentUser" class="nav-item nav-link" href="/profile/{{currentUser.id}}">{{ currentUser.username }}</a>
     </div>
   </nav>
 </div>
