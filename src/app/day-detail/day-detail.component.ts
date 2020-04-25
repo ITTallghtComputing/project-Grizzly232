@@ -58,6 +58,10 @@ export class DayDetailComponent implements OnInit {
     );
 
     this.date.subscribe(date => {
+      if(date.substring(date.lastIndexOf("-"), date.length).length == 2) {
+        date = [date.slice(0, date.lastIndexOf("-") + 1), "0", date.slice(date.lastIndexOf("-") + 1)].join("");
+      }
+      console.log(date);
       const tempDate = this.dateHandler.convertToFirebaseDate(date);
       this.day = this.db.getDay(tempDate);
       this.sessions = this.db.getSessions(tempDate);
