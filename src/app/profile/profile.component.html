@@ -32,7 +32,7 @@
                 </form>
             </div>
             <ng-template #formElse>
-                <h6 *ngIf="!user.bio; else bioElse">You haven't added a bio yet.</h6>
+                <h6 *ngIf="!(user | async)?.bio; else bioElse">You haven't added a bio yet.</h6>
                 <ng-template #bioElse>
                     <h6>{{ (user | async)?.bio }}</h6>
                 </ng-template>

@@ -276,8 +276,8 @@ export class FirebaseService {
   }
 
   editBio(values) {
-    this.db.collection('users', ref => ref.where('id', '==', JSON.parse(localStorage.getItem('currentUser')).id)).get().subscribe(user => {
-      user.docs[0].ref.update({ bio: values.bio});
+    this.db.collection('users').doc(`${this.currentUser.id}`).get().subscribe(user => {
+      user.ref.update({ bio: values.bio});
     });
   }
 }

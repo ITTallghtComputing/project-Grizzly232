@@ -3,8 +3,6 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { FirebaseService } from './../../_services/firebase.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { DocumentData } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-profile',
@@ -21,6 +19,8 @@ export class ProfileComponent implements OnInit {
   bioForm: FormGroup;
   showBioForm: false;
 
+  profileId: any;
+
   constructor(
     public db: FirebaseService,
     public builder: FormBuilder,
@@ -29,13 +29,13 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    const profileId = this.route.paramMap.pipe(
+    this.profileId = this.route.paramMap.pipe(
       map((params: ParamMap) => {
         return params.get('profileId');
       })
     );
 
-    profileId.subscribe(id => {
+    this.profileId.subscribe(id => {
         this.user = this.db.getUser(id);
         if (id === JSON.parse(localStorage.getItem('currentUser')).id) {
           this.isCurrentUser = true;
@@ -48,10 +48,8 @@ export class ProfileComponent implements OnInit {
   }
 
   editBio() {
-    // let values = this.bioForm.getRawValue();
-    // this.db.editBio(values);
-    // this.user["bio"] = values.bio;
-    // localStorage.setItem("currentUser", JSON.stringify(this.user));
-    // this.showBioForm = false;
+    let values = this.bioForm.getRawValue();
+    this.db.editBio(values);
+    this.showBioForm = false;
   }
 }
