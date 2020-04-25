@@ -44,8 +44,8 @@ export class PostComponent implements OnInit {
       })
     );
 
-    if(localStorage.getItem("currentUser")) {
-      this.user = JSON.parse(localStorage.getItem("currentUser")).username;
+    if (localStorage.getItem('currentUser')) {
+      this.user = JSON.parse(localStorage.getItem('currentUser')).username;
     }
 
     this.id.subscribe(postId => {

@@ -48,7 +48,7 @@ export class ProfileComponent implements OnInit {
   }
 
   editBio() {
-    let values = this.bioForm.getRawValue();
+    const values = this.bioForm.getRawValue();
     this.db.editBio(values);
     this.showBioForm = false;
   }
